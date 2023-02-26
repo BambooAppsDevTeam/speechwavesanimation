@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#F0D9BB">
+
+    <ak.sh.ay.musicwave.MusicWave
+        android:id="@+id/musicWave"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:colorGradient="true"
+        app:endColor="#00f"
+        app:startColor="#f00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:waveThickness="1" />
+
+    <eu.bamboo.voice_animation.views.VoiceWave
+        android:id="@+id/musicWave1"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:colorGradient="true"
+        app:endColor="#a9c6f4"
+        app:startColor="#656ED1"
+        app:middleColor="#80656ED1"
+        app:waveDensity="0.1"
+        app:animationSpeed="FAST"
+        app:lineCount="4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/musicWave"
+        app:lineThickness="1" />
+
+    <eu.bamboo.voice_animation.views.VoiceWave2
+        android:id="@+id/musicWave2"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:colorGradient="true"
+        app:middleColor="#950"
+        app:endColor="#f0f"
+        app:startColor="#000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/musicWave1"
+        app:lineThickness="1" />
+
+    <Button
+        android:id="@+id/forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More"
+        app:layout_constraintTop_toBottomOf="@id/musicWave2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

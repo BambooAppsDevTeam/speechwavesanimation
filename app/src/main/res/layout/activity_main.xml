@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <!-- Wave line View -->
+    <jaygoo.widget.wlv.WaveLineView
+        android:id="@+id/waveLineView"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="12dp"
+        android:layout_below="@+id/config"
+        app:wlvBackgroundColor="@android:color/white"
+        app:wlvLineColor="@color/design_default_color_primary"
+        app:wlvMoveSpeed="290" />
+
+    <!-- Wave line View -->
+    <eu.bamboo.voice_animation.views.WaveLineView2
+        android:id="@+id/waveLineView2"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/waveLineView"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="12dp"
+        app:wlvBackgroundColor="@android:color/white"
+        app:wlvLineColor="@color/design_default_color_primary"
+        app:wlvMoveSpeed="290" />
+
+    <Button
+        android:id="@+id/toSecondScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonStart"
+        android:text="Second" />
+
+    <Button
+        android:id="@+id/toMyScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/buttonStart"
+        android:text="Mine" />
+
+    <!-- button to start the wave line animation -->
+    <Button
+        android:id="@+id/buttonStart"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="80dp"
+        android:backgroundTint="#03A9F4"
+        android:includeFontPadding="true"
+        android:paddingStart="12dp"
+        android:paddingTop="19dp"
+        android:paddingEnd="9dp"
+        android:paddingBottom="17dp"
+        android:text="Start Wave Line Animation"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#ffff"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+
+    <!-- button to stop the wave line animation -->
+    <Button
+        android:id="@+id/buttonStop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#FF2234"
+        android:includeFontPadding="true"
+        android:paddingStart="24dp"
+        android:paddingTop="19dp"
+        android:paddingEnd="9dp"
+        android:paddingBottom="17dp"
+        android:text="Stop Wave Line Animation"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#DFFFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+
+    <!-- vertical Linear Layout Containing SeekBars and TextViews -->
+    <LinearLayout
+        android:id="@+id/config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <!-- Text view for  speed -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="0dp"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp"
+            android:text="Change Speed"
+            tools:ignore="HardcodedText" />
+
+        <!-- Speed Seek bar -->
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBarSpeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="3dp"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp" />
+
+        <!-- Text view for Volume -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="0dp"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp"
+            android:text="Change Volume"
+            tools:ignore="HardcodedText" />
+
+        <!-- Volume Seek bar -->
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBarVolume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="3dp"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp" />
+
+        <!-- Text view for Sensibility -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="0dp"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp"
+            android:text="Change Sensibility"
+            tools:ignore="HardcodedText" />
+
+        <!-- Sensibility Seek bar -->
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBarSensibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="3dp"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
