@@ -14,7 +14,7 @@ import java.util.Random
 import kotlin.math.abs
 import kotlin.math.ceil
 
-class VoiceWave @JvmOverloads constructor(
+class VoiceWave3 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -42,6 +42,11 @@ class VoiceWave @JvmOverloads constructor(
             pathList = Array(value) { Path() }
             linesOffset = if (value == 1) 1f else 2f / (value - 1)
         }
+    private val bezierControlStartPointsPath = Path()
+    private val bezierControlEndPointsPath = Path()
+    private val top = Path()
+    private val center = Path()
+    private val bottom = Path()
     private var density = DEFAULT_DENSITY
         set(value) {
             field = value
@@ -131,9 +136,6 @@ class VoiceWave @JvmOverloads constructor(
                 destinationY[i] = posY.toFloat()
             }
             destinationY[points.size - 1] = randPosY
-//            Log.d("Olololo", "center = ${rect.height() / 2}")
-//            Log.d("Olololo", "sourceY = ${sourceY.joinToString()}")
-//            Log.d("Olololo", "destinationY = ${destinationY.joinToString()}")
         }
     }
 
@@ -144,7 +146,6 @@ class VoiceWave @JvmOverloads constructor(
             points[i].y = sourceY[i] + batchCount.toFloat() / maxBatchCount * (destinationY[i] - sourceY[i])
         }
 
-//        Log.d("Olololo", "points = ${points.joinToString()}")
         if (batchCount == maxBatchCount) batchCount = 0
     }
 
@@ -156,8 +157,6 @@ class VoiceWave @JvmOverloads constructor(
             bezierControlEndPoints[i].x = bezierControlX
             bezierControlEndPoints[i].y = points[i].y
         }
-//        Log.d("Olololo", "bezierControlStartPoints = ${bezierControlStartPoints.joinToString()}")
-//        Log.d("Olololo", "bezierControlEndPoints = ${bezierControlEndPoints.joinToString()}")
     }
 
     private fun prepareConfig() {
@@ -169,49 +168,70 @@ class VoiceWave @JvmOverloads constructor(
         }
     }
 
-    private val bezierControlStartPointsPath = Path()
-    private val bezierControlEndPointsPath = Path()
-
     private fun drawPath(canvas: Canvas) {
-        pathList.forEachIndexed { index, path ->
-            path.rewind()
-            bezierControlStartPointsPath.rewind()
-            bezierControlEndPointsPath.rewind()
+        pathList
+            .filterIndexed { index, path -> index == 0 }
+            .forEachIndexed { index, path ->
+                path.rewind()
+                bezierControlStartPointsPath.rewind()
+                bezierControlEndPointsPath.rewind()
 
-            val coefficient = 1 - index * linesOffset
-            path.moveTo(points[0].x, getRelativeY(points[0].y, coefficient))
-            for (i in 1 until points.size) {
-                path.cubicTo(
-                    bezierControlStartPoints[i].x,
-                    getRelativeY(bezierControlStartPoints[i].y, coefficient),
-                    bezierControlEndPoints[i].x,
-                    getRelativeY(bezierControlEndPoints[i].y, coefficient),
-                    points[i].x,
-                    getRelativeY(points[i].y, coefficient)
-                )
-                bezierControlStartPointsPath.addCircle(
-                    bezierControlStartPoints[i].x,
-                    getRelativeY(bezierControlStartPoints[i].y, coefficient),
-                    10f,
-                    Path.Direction.CW
-                )
-                bezierControlEndPointsPath.addCircle(
-                    bezierControlEndPoints[i].x,
-                    getRelativeY(bezierControlEndPoints[i].y, coefficient),
-                    10f,
-                    Path.Direction.CW
-                )
-            }
+                val coefficient = 1 - index * linesOffset
+                path.moveTo(points[0].x, getRelativeY(points[0].y, coefficient))
+                for (i in 1 until points.size) {
+                    path.cubicTo(
+                        bezierControlStartPoints[i].x,
+                        getRelativeY(bezierControlStartPoints[i].y, coefficient),
+                        bezierControlEndPoints[i].x,
+                        getRelativeY(bezierControlEndPoints[i].y, coefficient),
+                        points[i].x,
+                        getRelativeY(points[i].y, coefficient)
+                    )
+                    bezierControlStartPointsPath.addCircle(
+                        bezierControlStartPoints[i].x,
+                        getRelativeY(bezierControlStartPoints[i].y, coefficient),
+                        10f,
+                        Path.Direction.CW
+                    )
+                    bezierControlEndPointsPath.addCircle(
+                        bezierControlEndPoints[i].x,
+                        getRelativeY(bezierControlEndPoints[i].y, coefficient),
+                        10f,
+                        Path.Direction.CW
+                    )
+                }
 
-            if (pathList.firstOrLast(index)) {
-                config.thickness = 6f
-                config.colorGradient = true
-            } else {
-                config.thickness = 2f
+                if (pathList.firstOrLast(index)) {
+                    config.thickness = 6f
+                    config.colorGradient = true
+                } else {
+                    config.thickness = 2f
+                    config.colorGradient = false
+                }
+                canvas.drawPath(path, config.paintWave)
+
                 config.colorGradient = false
+                config.middleColor = Color.RED
+                canvas.drawPath(bezierControlStartPointsPath, config.paintWave)
+                config.middleColor = Color.YELLOW
+                canvas.drawPath(bezierControlEndPointsPath, config.paintWave)
+
+                config.thickness = 3f
+                top.moveTo(rect.left.toFloat(), rect.top.toFloat())
+                top.lineTo(rect.right.toFloat(), rect.top.toFloat())
+                config.middleColor = Color.BLACK
+                canvas.drawPath(top, config.paintWave)
+
+                center.moveTo(rect.left.toFloat(), rect.height().toFloat() / 2)
+                center.lineTo(rect.right.toFloat(), rect.height().toFloat() / 2)
+                config.middleColor = Color.CYAN
+                canvas.drawPath(center, config.paintWave)
+
+                bottom.moveTo(rect.left.toFloat(), rect.bottom.toFloat())
+                bottom.lineTo(rect.right.toFloat(), rect.bottom.toFloat())
+                config.middleColor = Color.MAGENTA
+                canvas.drawPath(bottom, config.paintWave)
             }
-            canvas.drawPath(path, config.paintWave)
-        }
     }
 
     private fun getRelativeY(y: Float, coefficient: Float): Float {
@@ -220,7 +240,7 @@ class VoiceWave @JvmOverloads constructor(
         return heightCenter + diff * coefficient
     }
 
-    fun setConfig(config: Config2): VoiceWave {
+    fun setConfig(config: Config2): VoiceWave3 {
         this.config = config
         return this
     }
@@ -242,5 +262,3 @@ class VoiceWave @JvmOverloads constructor(
         private const val DEFAULT_PADDING = 0.15f
     }
 }
-
-fun <T> Array<T>.firstOrLast(index: Int): Boolean = index == 0 || index == size - 1

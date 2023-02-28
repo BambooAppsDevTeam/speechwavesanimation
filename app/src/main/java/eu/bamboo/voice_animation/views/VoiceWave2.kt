@@ -63,7 +63,7 @@ class VoiceWave2 @JvmOverloads constructor(
             val byte1 = abs(bytes[byteIndex].toInt()).toByte()
             val byte2 = bytes[byteIndex]
             val byte = if (bytes[byteIndex] >= 0) bytes[byteIndex] else (BYTE_SIZE - 1).toByte()
-            points[i].y = (heightCenter + (byte1 + BYTE_SIZE).toByte() * (heightCenter) / BYTE_SIZE).toFloat()
+            points[i].y = (heightCenter + (byte2 + BYTE_SIZE).toByte() * (heightCenter) / BYTE_SIZE).toFloat()
         }
 
         prepareConfig()

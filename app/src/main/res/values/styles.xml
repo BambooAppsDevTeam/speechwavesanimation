@@ -13,6 +13,7 @@
             <enum name="FAST" value="2"/>
         </attr>
         <attr name="lineCount" format="integer" />
+        <attr name="windowPadding" format="float" />
     </declare-styleable>
 
 </resources>

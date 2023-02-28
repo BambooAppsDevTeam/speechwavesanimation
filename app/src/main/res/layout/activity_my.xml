@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#F0D9BB">
+    android:background="@android:color/black">
 
     <ak.sh.ay.musicwave.MusicWave
         android:id="@+id/musicWave"
@@ -19,14 +19,15 @@
     <eu.bamboo.voice_animation.views.VoiceWave
         android:id="@+id/musicWave1"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="70dp"
         app:colorGradient="true"
         app:endColor="#a9c6f4"
         app:startColor="#656ED1"
         app:middleColor="#80656ED1"
-        app:waveDensity="0.1"
-        app:animationSpeed="FAST"
+        app:waveDensity="0.15"
+        app:animationSpeed="SLOW"
         app:lineCount="4"
+        app:windowPadding="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/musicWave"
         app:lineThickness="1" />
@@ -43,12 +44,28 @@
         app:layout_constraintTop_toBottomOf="@+id/musicWave1"
         app:lineThickness="1" />
 
+    <eu.bamboo.voice_animation.views.VoiceWave3
+        android:id="@+id/musicWave3"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:colorGradient="true"
+        app:endColor="#a9c6f4"
+        app:startColor="#656ED1"
+        app:middleColor="#80656ED1"
+        app:waveDensity="0.15"
+        app:animationSpeed="SLOW"
+        app:lineCount="4"
+        app:windowPadding="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/musicWave2"
+        app:lineThickness="1" />
+
     <Button
         android:id="@+id/forward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="More"
-        app:layout_constraintTop_toBottomOf="@id/musicWave2"
+        app:layout_constraintTop_toBottomOf="@id/musicWave3"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,7 @@ import eu.bamboo.voice_animation.R
 
 class Config2(context: Context, attrs: AttributeSet?, private val musicWave: View) {
 
-    private var middleColor = 0
+    var middleColor = 0
         set(value) {
             field = value
             paintWave.color = value

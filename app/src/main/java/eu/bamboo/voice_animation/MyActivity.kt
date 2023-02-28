@@ -60,6 +60,7 @@ class MyActivity : AppCompatActivity() {
                     binding.musicWave.updateVisualizer(bytes)
                     binding.musicWave1.updateVisualizer(bytes)
                     binding.musicWave2.updateVisualizer(bytes)
+                    binding.musicWave3.updateVisualizer(bytes)
                 }
 
                 override fun onFftDataCapture(
