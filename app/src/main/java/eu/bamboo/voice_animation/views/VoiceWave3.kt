@@ -6,12 +6,9 @@ import android.graphics.Color
 import android.graphics.Path
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import eu.bamboo.voice_animation.R
 import eu.bamboo.voice_animation.algorithm.Point
-import java.util.Random
-import kotlin.math.abs
 import kotlin.math.ceil
 
 class VoiceWave3 @JvmOverloads constructor(
@@ -32,7 +29,7 @@ class VoiceWave3 @JvmOverloads constructor(
     private val rect = Rect()
     private var widthOffset = -1f
     private var windowPadding = DEFAULT_PADDING
-    private var config: Config2 = Config2(context, attrs, this)
+    private var config: Config = Config(context, attrs, this)
 
     private var pathList: Array<Path> = emptyArray()
     private var linesOffset = 1f
@@ -240,7 +237,7 @@ class VoiceWave3 @JvmOverloads constructor(
         return heightCenter + diff * coefficient
     }
 
-    fun setConfig(config: Config2): VoiceWave3 {
+    fun setConfig(config: Config): VoiceWave3 {
         this.config = config
         return this
     }

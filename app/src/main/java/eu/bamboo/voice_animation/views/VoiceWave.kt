@@ -2,7 +2,6 @@ package eu.bamboo.voice_animation.views
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Path
 import android.graphics.Rect
 import android.util.AttributeSet
@@ -10,8 +9,6 @@ import android.util.Log
 import android.view.View
 import eu.bamboo.voice_animation.R
 import eu.bamboo.voice_animation.algorithm.Point
-import java.util.Random
-import kotlin.math.abs
 import kotlin.math.ceil
 
 class VoiceWave @JvmOverloads constructor(
@@ -32,7 +29,7 @@ class VoiceWave @JvmOverloads constructor(
     private val rect = Rect()
     private var widthOffset = -1f
     private var windowPadding = DEFAULT_PADDING
-    private var config: Config2 = Config2(context, attrs, this)
+    private var config: Config = Config(context, attrs, this)
 
     private var pathList: Array<Path> = emptyArray()
     private var linesOffset = 1f
@@ -115,22 +112,42 @@ class VoiceWave @JvmOverloads constructor(
     }
 
     private fun findDestinationBezierPointForBatch(rawAudioBytes: ByteArray) {
-        val heightCenter = rect.height() / 2
+        val heightCenter = rect.height() / 2f
         val paddingHorizontal = AXIS_X_WIDTH * windowPadding
+        val offset = pointCount * windowPadding
+//        (0..offset).forEach { i ->
+//            sourceY[i] = heightCenter
+//            destinationY[i] = heightCenter
+//        }
+//        ((pointCount - offset)..pointCount).forEach { i ->
+//            sourceY[i] = heightCenter
+//            destinationY[i] = heightCenter
+//        }
+
         if (batchCount == 0) {
-            val randPosY = destinationY.last()
+            val lastPosY = destinationY.last()
+//            for (i in (points.indices)) {
+            Log.d("Olololo", "staaaaaaaaaaaaaaaaaaaaaaaaaaaaaart")
+            Log.d("Olololo", "pointCount = $pointCount")
+            Log.d("Olololo", "rawAudioBytes.size = ${rawAudioBytes.size}")
+            Log.d("Olololo", "offset = $offset")
+            Log.d("Olololo", "paddingHorizontal = $paddingHorizontal")
+//            for (i in (offset..(pointCount - offset))) {
             for (i in points.indices) {
-                val x = ceil(((i + 1) * (rawAudioBytes.size / pointCount)).toDouble()).toInt()
+//                val x = (ceil((i + 1) * ((rawAudioBytes.size - 2 * paddingHorizontal) / pointCount)).toDouble()).toInt()
+                val x = ceil(((i) * (rawAudioBytes.size / pointCount)).toDouble()).toInt()
                 val posY = if (x > paddingHorizontal && x < AXIS_X_WIDTH - paddingHorizontal) {
+//                val posY = if (x < AXIS_X_WIDTH) {
                     heightCenter + (rawAudioBytes[x] + BYTE_SIZE).toByte() * heightCenter / BYTE_SIZE
                 } else {
                     heightCenter
                 }
+                Log.d("Olololo", "i = $i. x = $x. posY = $posY")
 
                 sourceY[i] = destinationY[i]
-                destinationY[i] = posY.toFloat()
+                destinationY[i] = posY
             }
-            destinationY[points.size - 1] = randPosY
+            destinationY[points.size - 1] = lastPosY
 //            Log.d("Olololo", "center = ${rect.height() / 2}")
 //            Log.d("Olololo", "sourceY = ${sourceY.joinToString()}")
 //            Log.d("Olololo", "destinationY = ${destinationY.joinToString()}")
@@ -207,7 +224,7 @@ class VoiceWave @JvmOverloads constructor(
                 config.thickness = 6f
                 config.colorGradient = true
             } else {
-                config.thickness = 2f
+                config.thickness = 3f
                 config.colorGradient = false
             }
             canvas.drawPath(path, config.paintWave)
@@ -220,7 +237,7 @@ class VoiceWave @JvmOverloads constructor(
         return heightCenter + diff * coefficient
     }
 
-    fun setConfig(config: Config2): VoiceWave {
+    fun setConfig(config: Config): VoiceWave {
         this.config = config
         return this
     }
@@ -239,7 +256,7 @@ class VoiceWave @JvmOverloads constructor(
         private const val DEFAULT_DENSITY = 0.1f
         private const val MAX_ANIM_BATCH_COUNT = 4
         private const val AXIS_X_WIDTH = 1024
-        private const val DEFAULT_PADDING = 0.15f
+        private const val DEFAULT_PADDING = 0.4f
     }
 }
 

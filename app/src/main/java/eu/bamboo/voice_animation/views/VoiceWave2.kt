@@ -21,7 +21,7 @@ class VoiceWave2 @JvmOverloads constructor(
     private var bezierControlStartPoints: Array<Point> = Array(pointCount) { Point(0f, 0f) }
     private var bezierControlEndPoints: Array<Point> = Array(pointCount) { Point(0f, 0f) }
     private val rect = Rect()
-    private var config: Config2 = Config2(context, attrs, this)
+    private var config: Config = Config(context, attrs, this)
     private val path = Path()
     private var density = DEFAULT_DENSITY
         set(value) {
@@ -127,7 +127,7 @@ class VoiceWave2 @JvmOverloads constructor(
         }
     }
 
-    fun setConfig(config: Config2): VoiceWave2 {
+    fun setConfig(config: Config): VoiceWave2 {
         this.config = config
         return this
     }

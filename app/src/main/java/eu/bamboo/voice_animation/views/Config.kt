@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import eu.bamboo.voice_animation.R
 
-class Config2(context: Context, attrs: AttributeSet?, private val musicWave: View) {
+class Config(context: Context, attrs: AttributeSet?, private val musicWave: View) {
 
     var middleColor = 0
         set(value) {
@@ -52,7 +52,7 @@ class Config2(context: Context, attrs: AttributeSet?, private val musicWave: Vie
         }
     }
 
-    fun setPaintWave(paintWave: Paint): Config2 {
+    fun setPaintWave(paintWave: Paint): Config {
         this.paintWave = paintWave
         return this
     }
@@ -61,7 +61,7 @@ class Config2(context: Context, attrs: AttributeSet?, private val musicWave: Vie
         paintWave.shader = LinearGradient(
             0f, 0f, 0f, musicWave.height.toFloat(),
             arrayOf(startColor, endColor, startColor).toIntArray(),
-            arrayOf(0.3f, 0.5f, 0.7f).toFloatArray(),
+            arrayOf(0.4f, 0.5f, 0.6f).toFloatArray(),
             Shader.TileMode.MIRROR
         )
         return paintWave
