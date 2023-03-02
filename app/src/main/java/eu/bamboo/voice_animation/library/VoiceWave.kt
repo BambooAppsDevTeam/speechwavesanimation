@@ -32,6 +32,8 @@ class VoiceWave @JvmOverloads constructor(
     private var widthOffset = -1f
     @FloatRange(from = 0.0,to = 0.5)
     var windowPadding = DEFAULT_PADDING
+    var thickness = DEFAULT_THICKNESS
+    var thicknessMiddle = DEFAULT_THICKNESS_MIDDLE
     val config: Config = Config(context, attrs, this)
 
     private var pathList: Array<Path> = emptyArray()
@@ -157,12 +159,7 @@ class VoiceWave @JvmOverloads constructor(
     }
 
     private fun prepareConfig() {
-        if (config.colorGradient) {
-            config.reSetupPaint()
-            config.colorGradient = true
-        } else {
-            config.reSetupPaint()
-        }
+        config.reSetupPaint()
     }
 
     private val bezierControlStartPointsPath = Path()
@@ -200,10 +197,10 @@ class VoiceWave @JvmOverloads constructor(
             }
 
             if (pathList.firstOrLast(index)) {
-                config.thickness = 6f
+                config.thickness = thickness.toFloat()
                 config.colorGradient = true
             } else {
-                config.thickness = 3f
+                config.thickness = thicknessMiddle.toFloat()
                 config.colorGradient = false
             }
             canvas.drawPath(path, config.paintWave)
@@ -227,5 +224,7 @@ class VoiceWave @JvmOverloads constructor(
         private const val MAX_ANIM_BATCH_COUNT = 4
         private const val AXIS_X_WIDTH = 1024
         private const val DEFAULT_PADDING = 0.4f
+        private const val DEFAULT_THICKNESS = 6
+        private const val DEFAULT_THICKNESS_MIDDLE = 3
     }
 }

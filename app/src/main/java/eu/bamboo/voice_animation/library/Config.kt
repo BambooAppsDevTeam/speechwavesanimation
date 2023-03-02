@@ -16,8 +16,8 @@ class Config(context: Context, attrs: AttributeSet?, private val musicWave: View
             field = value
             paintWave.color = value
         }
-    private var startColor = 0
-    private var endColor = 0
+    var startColor = 0
+    var endColor = 0
     var thickness = 0f
         set(value) {
             field = value
@@ -40,7 +40,6 @@ class Config(context: Context, attrs: AttributeSet?, private val musicWave: View
         if (attrs != null) {
             thickness = a.getFloat(R.styleable.VoiceWave_lineThickness, 1f)
             middleColor = a.getColor(R.styleable.VoiceWave_middleColor, Color.parseColor("#691A40"))
-            colorGradient = a.getBoolean(R.styleable.VoiceWave_colorGradient, false)
             startColor = a.getColor(R.styleable.VoiceWave_startColor, Color.parseColor("#93278F"))
             endColor = a.getColor(R.styleable.VoiceWave_endColor, Color.parseColor("#00A99D"))
             a.recycle()

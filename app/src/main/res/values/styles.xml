@@ -2,7 +2,6 @@
 <resources>
     <declare-styleable name="VoiceWave">
         <attr name="lineThickness" format="float" />
-        <attr name="colorGradient" format="boolean" />
         <attr name="startColor" format="color" />
         <attr name="endColor" format="color" />
         <attr name="middleColor" format="color" />

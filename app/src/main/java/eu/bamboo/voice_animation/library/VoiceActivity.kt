@@ -22,6 +22,20 @@ class VoiceActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        binding.applyColors.setOnClickListener {
+            val startColor = binding.colorStart.toColorInt()
+            val endColor = binding.colorEnd.toColorInt()
+            val middleColor = binding.colorMiddle.toColorInt()
+
+            startColor ?: return@setOnClickListener
+            endColor ?: return@setOnClickListener
+            middleColor ?: return@setOnClickListener
+
+            binding.musicWave.config.startColor = startColor
+            binding.musicWave.config.endColor = endColor
+            binding.musicWave.config.middleColor = middleColor
+        }
+
         binding.seekBarDensity.setOnSeekBarChangeListener(object: OnSeekBarChangeListener() {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 val density = progress.min(1) / 100f
@@ -54,9 +68,21 @@ class VoiceActivity : AppCompatActivity() {
             }
         })
 
-        binding.playAgain.setOnClickListener {
-            mediaPlayer.start()
-        }
+        binding.seekBarThickness.setOnSeekBarChangeListener(object: OnSeekBarChangeListener() {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                val thickness = progress.min(1)
+                binding.titleThickness.text = "Thickness of Main Line: $thickness"
+                binding.musicWave.thickness = thickness
+            }
+        })
+
+        binding.seekBarMiddleThickness.setOnSeekBarChangeListener(object: OnSeekBarChangeListener() {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                val thickness = progress.min(1)
+                binding.titleMiddleThickness.text = "Thickness of Middle Line: $thickness"
+                binding.musicWave.thicknessMiddle = thickness
+            }
+        })
 
         mediaPlayer = MediaPlayer.create(this, R.raw.voice_main_feature_5)
     }
