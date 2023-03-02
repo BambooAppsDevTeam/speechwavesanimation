@@ -1,4 +1,4 @@
-package eu.bamboo.voice_animation.library
+package eu.bamboo.voice_animation
 
 import android.content.pm.PackageManager
 import android.util.Log
@@ -21,8 +21,8 @@ fun AppCompatActivity.hasPermission(permission: String) = ActivityCompat.checkSe
 
 fun <T> Array<T>.firstOrLast(index: Int): Boolean = index == 0 || index == size - 1
 
-fun Int.toAnimationSpeed(default: VoiceWave.AnimationSpeed = VoiceWave.AnimationSpeed.NORMAL): VoiceWave.AnimationSpeed {
-    return VoiceWave.AnimationSpeed.values().find { it.ordinal == this } ?: default
+fun Int.toAnimationSpeed(default: AnimationSpeed = AnimationSpeed.NORMAL): AnimationSpeed {
+    return AnimationSpeed.values().find { it.ordinal == this } ?: default
 }
 
 fun Int.min(min: Int) = if (this < min) min else this

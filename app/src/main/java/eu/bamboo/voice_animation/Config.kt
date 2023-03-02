@@ -1,4 +1,4 @@
-package eu.bamboo.voice_animation.library
+package eu.bamboo.voice_animation
 
 import android.content.Context
 import android.graphics.Color
@@ -8,9 +8,8 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.FloatRange
-import eu.bamboo.voice_animation.R
 
-class Config(context: Context, attrs: AttributeSet?, private val musicWave: View) {
+class Config(context: Context, attrs: AttributeSet?) {
 
     var middleColor = 0
         set(value) {
@@ -19,21 +18,13 @@ class Config(context: Context, attrs: AttributeSet?, private val musicWave: View
         }
     var startColor = 0
     var endColor = 0
+
     @FloatRange(from = 0.0, to = 0.5)
     var colorGradientPositionOffset = DEFAULT_GRADIENT_POSITION_OFFSET
     var thickness = 0f
         set(value) {
             field = value
             paintWave.strokeWidth = value
-        }
-    var colorGradient = false
-        set(value) {
-            field = value
-            if (field) {
-                setGradients()
-            } else {
-                paintWave.shader = null
-            }
         }
     var paintWave = Paint()
         private set
@@ -46,22 +37,30 @@ class Config(context: Context, attrs: AttributeSet?, private val musicWave: View
             startColor = a.getColor(R.styleable.VoiceWave_startColor, Color.parseColor("#93278F"))
             endColor = a.getColor(R.styleable.VoiceWave_endColor, Color.parseColor("#00A99D"))
             a.recycle()
-            paintWave.strokeWidth = thickness
-            paintWave.isAntiAlias = true
-            paintWave.style = Paint.Style.STROKE
-            paintWave.color = middleColor
-            paintWave.alpha = 255
+            updatePaint()
         }
     }
 
-    fun setPaintWave(paintWave: Paint): Config {
-        this.paintWave = paintWave
-        return this
+    fun updatePaint() {
+        paintWave = Paint()
+        paintWave.strokeWidth = thickness
+        paintWave.isAntiAlias = true
+        paintWave.style = Paint.Style.STROKE
+        paintWave.color = middleColor
+        paintWave.alpha = 255
     }
 
-    fun setGradients() {
+    fun setColorGradient(hasColorGradient: Boolean, view: View) {
+        if (hasColorGradient) {
+            setGradients(view)
+        } else {
+            paintWave.shader = null
+        }
+    }
+
+    private fun setGradients(view: View) {
         paintWave.shader = LinearGradient(
-            0f, 0f, 0f, musicWave.height.toFloat(),
+            0f, 0f, 0f, view.height.toFloat(),
             arrayOf(startColor, endColor, startColor).toIntArray(),
             arrayOf(
                 GRADIENT_POSITION_MIDDLE - colorGradientPositionOffset,
@@ -70,16 +69,6 @@ class Config(context: Context, attrs: AttributeSet?, private val musicWave: View
             ).toFloatArray(),
             Shader.TileMode.MIRROR
         )
-    }
-
-    fun reSetupPaint(): Paint {
-        paintWave = Paint()
-        paintWave.strokeWidth = thickness
-        paintWave.isAntiAlias = true
-        paintWave.style = Paint.Style.STROKE
-        paintWave.color = middleColor
-        paintWave.alpha = 255
-        return paintWave
     }
 
     companion object {

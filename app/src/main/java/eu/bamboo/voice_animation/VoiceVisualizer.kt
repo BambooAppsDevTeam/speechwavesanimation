@@ -1,4 +1,4 @@
-package eu.bamboo.voice_animation.library
+package eu.bamboo.voice_animation
 
 import android.media.audiofx.Visualizer
 

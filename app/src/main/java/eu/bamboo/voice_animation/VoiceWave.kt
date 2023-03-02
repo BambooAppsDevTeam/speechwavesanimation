@@ -1,4 +1,4 @@
-package eu.bamboo.voice_animation.library
+package eu.bamboo.voice_animation
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,8 +8,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
-import eu.bamboo.voice_animation.R
-import eu.bamboo.voice_animation.algorithm.Point
 import kotlin.math.ceil
 
 class VoiceWave @JvmOverloads constructor(
@@ -33,7 +31,7 @@ class VoiceWave @JvmOverloads constructor(
     var windowPadding = DEFAULT_PADDING
     var thickness = DEFAULT_THICKNESS
     var thicknessMiddle = DEFAULT_THICKNESS_MIDDLE
-    val config: Config = Config(context, attrs, this)
+    val config: Config = Config(context, attrs)
 
     private var pathList: Array<Path> = emptyArray()
     private var linesOffset = 1f
@@ -158,17 +156,12 @@ class VoiceWave @JvmOverloads constructor(
     }
 
     private fun prepareConfig() {
-        config.reSetupPaint()
+        config.updatePaint()
     }
-
-    private val bezierControlStartPointsPath = Path()
-    private val bezierControlEndPointsPath = Path()
 
     private fun drawPath(canvas: Canvas) {
         pathList.forEachIndexed { index, path ->
             path.rewind()
-            bezierControlStartPointsPath.rewind()
-            bezierControlEndPointsPath.rewind()
 
             val coefficient = 1 - index * linesOffset
             path.moveTo(points[0].x, getRelativeY(points[0].y, coefficient))
@@ -181,27 +174,12 @@ class VoiceWave @JvmOverloads constructor(
                     points[i].x,
                     getRelativeY(points[i].y, coefficient)
                 )
-                bezierControlStartPointsPath.addCircle(
-                    bezierControlStartPoints[i].x,
-                    getRelativeY(bezierControlStartPoints[i].y, coefficient),
-                    10f,
-                    Path.Direction.CW
-                )
-                bezierControlEndPointsPath.addCircle(
-                    bezierControlEndPoints[i].x,
-                    getRelativeY(bezierControlEndPoints[i].y, coefficient),
-                    10f,
-                    Path.Direction.CW
-                )
             }
 
-            if (pathList.firstOrLast(index)) {
-                config.thickness = thickness.toFloat()
-                config.colorGradient = true
-            } else {
-                config.thickness = thicknessMiddle.toFloat()
-                config.colorGradient = false
-            }
+            val isMainLine = pathList.firstOrLast(index)
+            config.thickness = (if (isMainLine) thickness else thicknessMiddle).toFloat()
+            config.setColorGradient(isMainLine, this)
+
             canvas.drawPath(path, config.paintWave)
         }
     }
@@ -210,10 +188,6 @@ class VoiceWave @JvmOverloads constructor(
         val heightCenter = rect.height() / 2
         val diff = y - heightCenter
         return heightCenter + diff * coefficient
-    }
-
-    enum class AnimationSpeed {
-        SLOW, NORMAL, FAST
     }
 
     companion object {

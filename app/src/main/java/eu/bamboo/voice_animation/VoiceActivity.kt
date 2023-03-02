@@ -1,4 +1,4 @@
-package eu.bamboo.voice_animation.library
+package eu.bamboo.voice_animation
 
 import android.Manifest
 import android.media.MediaPlayer
@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.widget.SeekBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import eu.bamboo.voice_animation.R
 import eu.bamboo.voice_animation.databinding.ActivityVoiceBinding
 
 class VoiceActivity : AppCompatActivity() {
