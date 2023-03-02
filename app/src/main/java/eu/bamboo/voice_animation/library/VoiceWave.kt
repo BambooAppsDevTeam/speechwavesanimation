@@ -1,14 +1,16 @@
-package eu.bamboo.voice_animation.views
+package eu.bamboo.voice_animation.library
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Path
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
+import androidx.annotation.FloatRange
+import androidx.annotation.IntRange
 import eu.bamboo.voice_animation.R
 import eu.bamboo.voice_animation.algorithm.Point
+import eu.bamboo.voice_animation.views.BYTE_SIZE
 import kotlin.math.ceil
 
 class VoiceWave @JvmOverloads constructor(
@@ -28,18 +30,21 @@ class VoiceWave @JvmOverloads constructor(
     private var batchCount = 0
     private val rect = Rect()
     private var widthOffset = -1f
-    private var windowPadding = DEFAULT_PADDING
-    private var config: Config = Config(context, attrs, this)
+    @FloatRange(from = 0.0,to = 0.5)
+    var windowPadding = DEFAULT_PADDING
+    val config: Config = Config(context, attrs, this)
 
     private var pathList: Array<Path> = emptyArray()
     private var linesOffset = 1f
-    private var pathCount = 1
+    @IntRange(from = 1, to = 8)
+    var pathCount = 1
         set(value) {
             field = value
             pathList = Array(value) { Path() }
             linesOffset = if (value == 1) 1f else 2f / (value - 1)
         }
-    private var density = DEFAULT_DENSITY
+    @FloatRange(from = 0.1,to = 1.0)
+    var density = DEFAULT_DENSITY
         set(value) {
             field = value
             pointCount = (EXTREMUM_NUMBER_MAX * field).toInt()
@@ -47,7 +52,7 @@ class VoiceWave @JvmOverloads constructor(
             createArraysIfChanged()
             widthOffset = -1f
         }
-    private var speed: AnimationSpeed = AnimationSpeed.NORMAL
+    var speed: AnimationSpeed = AnimationSpeed.NORMAL
         set(value) {
             field = value
             maxBatchCount = MAX_ANIM_BATCH_COUNT - field.ordinal
@@ -114,43 +119,20 @@ class VoiceWave @JvmOverloads constructor(
     private fun findDestinationBezierPointForBatch(rawAudioBytes: ByteArray) {
         val heightCenter = rect.height() / 2f
         val paddingHorizontal = AXIS_X_WIDTH * windowPadding
-        val offset = pointCount * windowPadding
-//        (0..offset).forEach { i ->
-//            sourceY[i] = heightCenter
-//            destinationY[i] = heightCenter
-//        }
-//        ((pointCount - offset)..pointCount).forEach { i ->
-//            sourceY[i] = heightCenter
-//            destinationY[i] = heightCenter
-//        }
-
         if (batchCount == 0) {
             val lastPosY = destinationY.last()
-//            for (i in (points.indices)) {
-            Log.d("Olololo", "staaaaaaaaaaaaaaaaaaaaaaaaaaaaaart")
-            Log.d("Olololo", "pointCount = $pointCount")
-            Log.d("Olololo", "rawAudioBytes.size = ${rawAudioBytes.size}")
-            Log.d("Olololo", "offset = $offset")
-            Log.d("Olololo", "paddingHorizontal = $paddingHorizontal")
-//            for (i in (offset..(pointCount - offset))) {
             for (i in points.indices) {
-//                val x = (ceil((i + 1) * ((rawAudioBytes.size - 2 * paddingHorizontal) / pointCount)).toDouble()).toInt()
                 val x = ceil(((i) * (rawAudioBytes.size / pointCount)).toDouble()).toInt()
                 val posY = if (x > paddingHorizontal && x < AXIS_X_WIDTH - paddingHorizontal) {
-//                val posY = if (x < AXIS_X_WIDTH) {
                     heightCenter + (rawAudioBytes[x] + BYTE_SIZE).toByte() * heightCenter / BYTE_SIZE
                 } else {
                     heightCenter
                 }
-                Log.d("Olololo", "i = $i. x = $x. posY = $posY")
 
                 sourceY[i] = destinationY[i]
                 destinationY[i] = posY
             }
             destinationY[points.size - 1] = lastPosY
-//            Log.d("Olololo", "center = ${rect.height() / 2}")
-//            Log.d("Olololo", "sourceY = ${sourceY.joinToString()}")
-//            Log.d("Olololo", "destinationY = ${destinationY.joinToString()}")
         }
     }
 
@@ -161,7 +143,6 @@ class VoiceWave @JvmOverloads constructor(
             points[i].y = sourceY[i] + batchCount.toFloat() / maxBatchCount * (destinationY[i] - sourceY[i])
         }
 
-//        Log.d("Olololo", "points = ${points.joinToString()}")
         if (batchCount == maxBatchCount) batchCount = 0
     }
 
@@ -173,8 +154,6 @@ class VoiceWave @JvmOverloads constructor(
             bezierControlEndPoints[i].x = bezierControlX
             bezierControlEndPoints[i].y = points[i].y
         }
-//        Log.d("Olololo", "bezierControlStartPoints = ${bezierControlStartPoints.joinToString()}")
-//        Log.d("Olololo", "bezierControlEndPoints = ${bezierControlEndPoints.joinToString()}")
     }
 
     private fun prepareConfig() {
@@ -237,17 +216,8 @@ class VoiceWave @JvmOverloads constructor(
         return heightCenter + diff * coefficient
     }
 
-    fun setConfig(config: Config): VoiceWave {
-        this.config = config
-        return this
-    }
-
     enum class AnimationSpeed {
         SLOW, NORMAL, FAST
-    }
-
-    private fun Int.toAnimationSpeed(default: AnimationSpeed = AnimationSpeed.NORMAL): AnimationSpeed {
-        return AnimationSpeed.values().find { it.ordinal == this } ?: default
     }
 
     companion object {
@@ -259,5 +229,3 @@ class VoiceWave @JvmOverloads constructor(
         private const val DEFAULT_PADDING = 0.4f
     }
 }
-
-fun <T> Array<T>.firstOrLast(index: Int): Boolean = index == 0 || index == size - 1

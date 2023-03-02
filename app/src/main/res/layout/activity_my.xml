@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:waveThickness="1" />
 
-    <eu.bamboo.voice_animation.views.VoiceWave
+    <eu.bamboo.voice_animation.library.VoiceWave
         android:id="@+id/musicWave1"
         android:layout_width="match_parent"
         android:layout_height="70dp"

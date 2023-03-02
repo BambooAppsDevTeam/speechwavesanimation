@@ -7,6 +7,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import eu.bamboo.voice_animation.algorithm.Point
+import eu.bamboo.voice_animation.library.Config
 import kotlin.math.abs
 
 class VoiceWave2 @JvmOverloads constructor(

@@ -9,6 +9,8 @@ import android.util.AttributeSet
 import android.view.View
 import eu.bamboo.voice_animation.R
 import eu.bamboo.voice_animation.algorithm.Point
+import eu.bamboo.voice_animation.library.Config
+import eu.bamboo.voice_animation.library.firstOrLast
 import kotlin.math.ceil
 
 class VoiceWave3 @JvmOverloads constructor(

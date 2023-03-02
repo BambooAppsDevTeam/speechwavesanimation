@@ -1,4 +1,4 @@
-package eu.bamboo.voice_animation.views
+package eu.bamboo.voice_animation.library
 
 import android.content.Context
 import android.graphics.Color
