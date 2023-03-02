@@ -97,18 +97,18 @@ class VoiceActivity : AppCompatActivity() {
 
         binding.seekBarThickness.setOnSeekBarChangeListener(object : OnSeekBarChangeListener() {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                val thickness = progress + 1
+                val thickness = progress + 1f
                 binding.titleThickness.text = "Thickness of Main Line: $thickness"
-                binding.musicWave.thickness = thickness
+                binding.musicWave.wavePaintConfig.thickness = thickness
             }
         })
 
         binding.seekBarMiddleThickness.setOnSeekBarChangeListener(object :
             OnSeekBarChangeListener() {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                val thickness = progress + 1
+                val thickness = progress + 1f
                 binding.titleMiddleThickness.text = "Thickness of Middle Line: $thickness"
-                binding.musicWave.thicknessMiddle = thickness
+                binding.musicWave.wavePaintConfig.thicknessMiddle = thickness
             }
         })
 
@@ -116,7 +116,7 @@ class VoiceActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 val colorGradient = progress / 100f / 2
                 binding.titleColorGradient.text = "Color Gradient Offset: $colorGradient"
-                binding.musicWave.config.colorGradientPositionOffset = colorGradient
+                binding.musicWave.wavePaintConfig.colorGradientPositionOffset = colorGradient
             }
         })
     }
@@ -144,9 +144,9 @@ class VoiceActivity : AppCompatActivity() {
         endColor ?: return
         middleColor ?: return
 
-        binding.musicWave.config.startColor = startColor
-        binding.musicWave.config.endColor = endColor
-        binding.musicWave.config.middleColor = middleColor
+        binding.musicWave.wavePaintConfig.startColor = startColor
+        binding.musicWave.wavePaintConfig.endColor = endColor
+        binding.musicWave.wavePaintConfig.middleColor = middleColor
     }
 
     private fun startMediaPlayerIfPermitted() {

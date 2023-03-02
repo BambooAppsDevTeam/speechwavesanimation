@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.FloatRange
 
-class Config(context: Context, attrs: AttributeSet?) {
+class WavePaintConfig(context: Context, attrs: AttributeSet?) {
 
     var middleColor = 0
         set(value) {
@@ -21,21 +21,20 @@ class Config(context: Context, attrs: AttributeSet?) {
 
     @FloatRange(from = 0.0, to = 0.5)
     var colorGradientPositionOffset = DEFAULT_GRADIENT_POSITION_OFFSET
-    var thickness = 0f
-        set(value) {
-            field = value
-            paintWave.strokeWidth = value
-        }
+    var thickness = DEFAULT_THICKNESS
+    var thicknessMiddle = DEFAULT_THICKNESS_MIDDLE
     var paintWave = Paint()
         private set
 
     init {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.VoiceWave, 0, 0)
         if (attrs != null) {
-            thickness = a.getFloat(R.styleable.VoiceWave_lineThickness, 1f)
+            thickness = a.getFloat(R.styleable.VoiceWave_lineThickness, DEFAULT_THICKNESS)
+            thicknessMiddle = a.getFloat(R.styleable.VoiceWave_middleLineThickness, DEFAULT_THICKNESS_MIDDLE)
             middleColor = a.getColor(R.styleable.VoiceWave_middleColor, Color.parseColor("#691A40"))
             startColor = a.getColor(R.styleable.VoiceWave_startColor, Color.parseColor("#93278F"))
             endColor = a.getColor(R.styleable.VoiceWave_endColor, Color.parseColor("#00A99D"))
+            colorGradientPositionOffset = a.getFloat(R.styleable.VoiceWave_gradientOffset, DEFAULT_GRADIENT_POSITION_OFFSET)
             a.recycle()
             updatePaint()
         }
@@ -50,12 +49,13 @@ class Config(context: Context, attrs: AttributeSet?) {
         paintWave.alpha = 255
     }
 
-    fun setColorGradient(hasColorGradient: Boolean, view: View) {
-        if (hasColorGradient) {
+    fun setMainLine(isMainLine: Boolean, view: View) {
+        if (isMainLine) {
             setGradients(view)
         } else {
             paintWave.shader = null
         }
+        paintWave.strokeWidth = (if (isMainLine) thickness else thicknessMiddle).toFloat()
     }
 
     private fun setGradients(view: View) {
@@ -74,5 +74,7 @@ class Config(context: Context, attrs: AttributeSet?) {
     companion object {
         private const val GRADIENT_POSITION_MIDDLE = 0.5f
         private const val DEFAULT_GRADIENT_POSITION_OFFSET = 0.1f
+        private const val DEFAULT_THICKNESS = 6f
+        private const val DEFAULT_THICKNESS_MIDDLE = 3f
     }
 }

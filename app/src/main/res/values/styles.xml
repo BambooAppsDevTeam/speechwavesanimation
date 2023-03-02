@@ -2,6 +2,8 @@
 <resources>
     <declare-styleable name="VoiceWave">
         <attr name="lineThickness" format="float" />
+        <attr name="middleLineThickness" format="float" />
+        <attr name="gradientOffset" format="float" />
         <attr name="startColor" format="color" />
         <attr name="endColor" format="color" />
         <attr name="middleColor" format="color" />
@@ -15,4 +17,36 @@
         <attr name="windowPadding" format="float" />
     </declare-styleable>
 
+    <style name="ColorTextInput">
+        <item name="android:textColorHint">@android:color/white</item>
+    </style>
+
+    <style name="ColorEditText" parent="ColorTextInput">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:maxLength">9</item>
+    </style>
+
+    <style name="SeekBarTitle">
+        <item name="android:layout_marginStart">11dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingEnd">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="SeekBarConfig">
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingEnd">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:progressBackgroundTint">@android:color/white</item>
+    </style>
 </resources>

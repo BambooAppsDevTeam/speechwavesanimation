@@ -27,16 +27,15 @@ class VoiceWave @JvmOverloads constructor(
     private var batchCount = 0
     private val rect = Rect()
     private var widthOffset = -1f
+
     @FloatRange(from = 0.0,to = 0.5)
-    var windowPadding = DEFAULT_PADDING
-    var thickness = DEFAULT_THICKNESS
-    var thicknessMiddle = DEFAULT_THICKNESS_MIDDLE
-    val config: Config = Config(context, attrs)
+    var windowPadding = DEFAULT_WINDOW_PADDING
+    val wavePaintConfig: WavePaintConfig = WavePaintConfig(context, attrs)
 
     private var pathList: Array<Path> = emptyArray()
     private var linesOffset = 1f
     @IntRange(from = 1, to = 8)
-    var pathCount = 1
+    var pathCount = DEFAULT_PATH_COUNT
         set(value) {
             field = value
             pathList = Array(value) { Path() }
@@ -62,8 +61,8 @@ class VoiceWave @JvmOverloads constructor(
         if (attrs != null) {
             density = a.getFloat(R.styleable.VoiceWave_waveDensity, DEFAULT_DENSITY)
             speed = a.getColor(R.styleable.VoiceWave_animationSpeed, AnimationSpeed.NORMAL.ordinal).toAnimationSpeed()
-            pathCount = a.getColor(R.styleable.VoiceWave_lineCount, 1)
-            windowPadding = a.getFloat(R.styleable.VoiceWave_windowPadding, DEFAULT_PADDING)
+            pathCount = a.getColor(R.styleable.VoiceWave_lineCount, DEFAULT_PATH_COUNT)
+            windowPadding = a.getFloat(R.styleable.VoiceWave_windowPadding, DEFAULT_WINDOW_PADDING)
             a.recycle()
         }
         createArraysIfChanged()
@@ -86,7 +85,7 @@ class VoiceWave @JvmOverloads constructor(
         smoothAnimation()
         calculateBezierCurveControlPoints()
 
-        prepareConfig()
+        wavePaintConfig.updatePaint()
 
         drawPath(canvas)
     }
@@ -155,10 +154,6 @@ class VoiceWave @JvmOverloads constructor(
         }
     }
 
-    private fun prepareConfig() {
-        config.updatePaint()
-    }
-
     private fun drawPath(canvas: Canvas) {
         pathList.forEachIndexed { index, path ->
             path.rewind()
@@ -177,10 +172,9 @@ class VoiceWave @JvmOverloads constructor(
             }
 
             val isMainLine = pathList.firstOrLast(index)
-            config.thickness = (if (isMainLine) thickness else thicknessMiddle).toFloat()
-            config.setColorGradient(isMainLine, this)
+            wavePaintConfig.setMainLine(isMainLine, this)
 
-            canvas.drawPath(path, config.paintWave)
+            canvas.drawPath(path, wavePaintConfig.paintWave)
         }
     }
 
@@ -193,12 +187,11 @@ class VoiceWave @JvmOverloads constructor(
     companion object {
         private const val EXTREMUM_NUMBER_MAX = 54
         private const val EXTREMUM_NUMBER_MIN = 3
-        private const val DEFAULT_DENSITY = 0.1f
+        private const val DEFAULT_DENSITY = 0.2f
         private const val MAX_ANIM_BATCH_COUNT = 4
         private const val AXIS_X_WIDTH = 1024
-        private const val DEFAULT_PADDING = 0.4f
-        private const val DEFAULT_THICKNESS = 6
-        private const val DEFAULT_THICKNESS_MIDDLE = 3
+        private const val DEFAULT_WINDOW_PADDING = 0.24f
+        private const val DEFAULT_PATH_COUNT = 4
         private const val BYTE_SIZE = 128
     }
 }

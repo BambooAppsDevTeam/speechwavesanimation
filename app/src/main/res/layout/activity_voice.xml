@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <eu.bamboo.voice_animation.VoiceWave
@@ -17,64 +17,60 @@
             android:layout_marginVertical="20dp"
             app:animationSpeed="NORMAL"
             app:endColor="#a9c6f4"
+            app:gradientOffset="0.1"
             app:lineCount="4"
-            app:lineThickness="1"
+            app:lineThickness="6"
             app:middleColor="#151764"
+            app:middleLineThickness="3"
             app:startColor="#656ED1"
             app:waveDensity="0.2"
             app:windowPadding="0.24" />
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundColor="@android:color/black"
-            android:textColorHint="@android:color/white"
-            android:hint="Start Color">
+            android:hint="Start Color"
+            app:boxBackgroundColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/colorStart"
+                style="@style/ColorEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="9"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
-                android:text="#656ED1"/>
+                android:text="#656ED1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundColor="@android:color/black"
-            android:textColorHint="@android:color/white"
-            android:hint="End Color">
+            android:hint="End Color"
+            app:boxBackgroundColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/colorEnd"
+                style="@style/ColorEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="9"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
-                android:text="#a9c6f4"/>
+                android:text="#a9c6f4" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundColor="@android:color/black"
-            android:textColorHint="@android:color/white"
-            android:hint="Middle Color">
+            android:hint="Middle Color"
+            app:boxBackgroundColor="@android:color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/colorMiddle"
+                style="@style/ColorEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="9"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
-                android:text="#151764"/>
+                android:text="#151764" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,213 +86,101 @@
 
         <TextView
             android:id="@+id/titleDensity"
+            style="@style/SeekBarTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="0dp"
-            android:paddingStart="5dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:text="Change Density: null"
-            android:textColor="@color/white" />
+            android:text="Change Density: null" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekBarDensity"
+            style="@style/SeekBarConfig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="3dp"
-            android:max="100"
-            android:paddingStart="4dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:progressBackgroundTint="@android:color/white" />
+            android:max="100" />
 
         <TextView
             android:id="@+id/titleSpeed"
+            style="@style/SeekBarTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="0dp"
-            android:paddingStart="5dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:text="Change Speed: null"
-            android:textColor="@color/white" />
+            android:text="Change Speed: null" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekBarSpeed"
+            style="@style/SeekBarConfig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="3dp"
-            android:max="2"
-            android:paddingStart="4dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:progressBackgroundTint="@android:color/white" />
+            android:max="2" />
 
         <TextView
             android:id="@+id/titleLineCount"
+            style="@style/SeekBarTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="0dp"
-            android:paddingStart="5dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:text="Change Line Count: null"
-            android:textColor="@color/white" />
+            android:text="Change Line Count: null" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekBarLineCount"
+            style="@style/SeekBarConfig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="3dp"
-            android:max="7"
-            android:paddingStart="4dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:progressBackgroundTint="@android:color/white" />
+            android:max="7" />
 
         <TextView
             android:id="@+id/titlePadding"
+            style="@style/SeekBarTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="0dp"
-            android:paddingStart="5dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:text="Change Padding: null"
-            android:textColor="@color/white" />
+            android:text="Change Padding: null" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekBarPadding"
+            style="@style/SeekBarConfig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="3dp"
-            android:max="100"
-            android:paddingStart="4dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:progressBackgroundTint="@android:color/white" />
+            android:max="100" />
 
         <TextView
             android:id="@+id/titleThickness"
+            style="@style/SeekBarTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="0dp"
-            android:paddingStart="5dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:text="Thickness of Main Line: null"
-            android:textColor="@color/white" />
+            android:text="Thickness of Main Line: null" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekBarThickness"
+            style="@style/SeekBarConfig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="3dp"
-            android:max="15"
-            android:paddingStart="4dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:progressBackgroundTint="@android:color/white" />
+            android:max="15" />
 
         <TextView
             android:id="@+id/titleMiddleThickness"
+            style="@style/SeekBarTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="0dp"
-            android:paddingStart="5dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:text="Thickness of Middle Line: null"
-            android:textColor="@color/white" />
+            android:text="Thickness of Middle Line: null" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekBarMiddleThickness"
+            style="@style/SeekBarConfig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="3dp"
-            android:max="15"
-            android:paddingStart="4dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:progressBackgroundTint="@android:color/white" />
+            android:max="15" />
 
         <TextView
             android:id="@+id/titleColorGradient"
+            style="@style/SeekBarTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="0dp"
-            android:paddingStart="5dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:text="Color Gradient Offset: null"
-            android:textColor="@color/white" />
+            android:text="Color Gradient Offset: null" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekBarColorGradient"
+            style="@style/SeekBarConfig"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="3dp"
-            android:max="100"
-            android:paddingStart="4dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="2dp"
-            android:paddingBottom="2dp"
-            android:progressBackgroundTint="@android:color/white" />
+            android:max="100" />
     </LinearLayout>
 
 </ScrollView>
