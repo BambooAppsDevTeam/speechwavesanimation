@@ -1,4 +1,4 @@
-package eu.bamboo.voice_animation
+package eu.bamboo.voiceanimation
 
 import android.content.Context
 import android.graphics.Canvas

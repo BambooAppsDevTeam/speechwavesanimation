@@ -1,4 +1,4 @@
-package eu.bamboo.voice_animation
+package eu.bamboo.voiceanimation
 
 data class Point(
     var x: Float,

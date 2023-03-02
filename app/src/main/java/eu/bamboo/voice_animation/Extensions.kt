@@ -19,12 +19,6 @@ fun AppCompatActivity.hasPermission(permission: String) = ActivityCompat.checkSe
     permission
 ) == PackageManager.PERMISSION_GRANTED
 
-fun <T> Array<T>.firstOrLast(index: Int): Boolean = index == 0 || index == size - 1
-
-fun Int.toAnimationSpeed(default: AnimationSpeed = AnimationSpeed.NORMAL): AnimationSpeed {
-    return AnimationSpeed.values().find { it.ordinal == this } ?: default
-}
-
 fun Int.min(min: Int) = if (this < min) min else this
 
 private const val COLOR_PREFIX = "#"

@@ -2,21 +2,15 @@ pluginManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter()
-        gradlePluginPortal()
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://dl.bintray.com/ssynhtn-org/android-wave-view' }
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        jcenter()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://dl.bintray.com/ssynhtn-org/android-wave-view' }
     }
 }
 rootProject.name = "VoiceAnimation"
 include ':app'
+include ':VoiceAnimation'

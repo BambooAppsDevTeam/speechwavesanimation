@@ -9,6 +9,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import eu.bamboo.voice_animation.databinding.ActivityVoiceBinding
 
+import eu.bamboo.voiceanimation.OnSeekBarChangeListener
+import eu.bamboo.voiceanimation.VoiceVisualizer
+import eu.bamboo.voiceanimation.toAnimationSpeed
+
 class VoiceActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVoiceBinding
