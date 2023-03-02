@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -23,30 +22,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".SecondActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".NextActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".NewActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".ForwardActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".MyActivity"
-            android:exported="true">
         </activity>
     </application>
 

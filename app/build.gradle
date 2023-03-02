@@ -37,11 +37,6 @@ android {
 
 dependencies {
 
-    implementation 'com.gauravk.audiovisualizer:audiovisualizer:0.9.2'
-    implementation 'com.github.Jay-Goo:WaveLineView:v1.0.4'
-    implementation 'com.ssynhtn:wave-view:1.0'
-    implementation 'com.github.squti:Android-Wave-Recorder:1.7.0'
-    implementation 'com.fxn769:musicwave:1.0'
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'

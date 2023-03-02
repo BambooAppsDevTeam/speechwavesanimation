@@ -10,7 +10,6 @@ import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import eu.bamboo.voice_animation.R
 import eu.bamboo.voice_animation.algorithm.Point
-import eu.bamboo.voice_animation.views.BYTE_SIZE
 import kotlin.math.ceil
 
 class VoiceWave @JvmOverloads constructor(
@@ -226,5 +225,6 @@ class VoiceWave @JvmOverloads constructor(
         private const val DEFAULT_PADDING = 0.4f
         private const val DEFAULT_THICKNESS = 6
         private const val DEFAULT_THICKNESS_MIDDLE = 3
+        private const val BYTE_SIZE = 128
     }
 }

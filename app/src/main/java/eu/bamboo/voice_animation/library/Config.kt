@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.FloatRange
 import eu.bamboo.voice_animation.R
 
 class Config(context: Context, attrs: AttributeSet?, private val musicWave: View) {
@@ -18,6 +19,8 @@ class Config(context: Context, attrs: AttributeSet?, private val musicWave: View
         }
     var startColor = 0
     var endColor = 0
+    @FloatRange(from = 0.0, to = 0.5)
+    var colorGradientPositionOffset = DEFAULT_GRADIENT_POSITION_OFFSET
     var thickness = 0f
         set(value) {
             field = value
@@ -26,7 +29,7 @@ class Config(context: Context, attrs: AttributeSet?, private val musicWave: View
     var colorGradient = false
         set(value) {
             field = value
-            if (colorGradient) {
+            if (field) {
                 setGradients()
             } else {
                 paintWave.shader = null
@@ -56,14 +59,17 @@ class Config(context: Context, attrs: AttributeSet?, private val musicWave: View
         return this
     }
 
-    fun setGradients(): Paint {
+    fun setGradients() {
         paintWave.shader = LinearGradient(
             0f, 0f, 0f, musicWave.height.toFloat(),
             arrayOf(startColor, endColor, startColor).toIntArray(),
-            arrayOf(0.4f, 0.5f, 0.6f).toFloatArray(),
+            arrayOf(
+                GRADIENT_POSITION_MIDDLE - colorGradientPositionOffset,
+                GRADIENT_POSITION_MIDDLE,
+                GRADIENT_POSITION_MIDDLE + colorGradientPositionOffset
+            ).toFloatArray(),
             Shader.TileMode.MIRROR
         )
-        return paintWave
     }
 
     fun reSetupPaint(): Paint {
@@ -74,5 +80,10 @@ class Config(context: Context, attrs: AttributeSet?, private val musicWave: View
         paintWave.color = middleColor
         paintWave.alpha = 255
         return paintWave
+    }
+
+    companion object {
+        private const val GRADIENT_POSITION_MIDDLE = 0.5f
+        private const val DEFAULT_GRADIENT_POSITION_OFFSET = 0.1f
     }
 }
