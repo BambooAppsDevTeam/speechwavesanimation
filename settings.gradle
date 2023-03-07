@@ -13,4 +13,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "VoiceAnimation"
 include ':app'
-include ':VoiceAnimation'
+include ':speech-waves-animation'
