@@ -1,4 +1,4 @@
-package eu.bamboo.voiceanimation
+package eu.bamboo.speech_waves_animation
 
 import android.content.Context
 import android.graphics.Canvas
@@ -10,7 +10,7 @@ import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import kotlin.math.ceil
 
-class VoiceWave @JvmOverloads constructor(
+class LinesWaveView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -23,7 +23,7 @@ class VoiceWave @JvmOverloads constructor(
     private var bezierControlEndPoints: Array<Point> = Array(pointCount + 1) { Point(0f, 0f) }
     private var sourceY: FloatArray = FloatArray(pointCount + 1)
     private var destinationY: FloatArray = FloatArray(pointCount + 1)
-    private var maxBatchCount = 0
+    private var maxBatchCount = MAX_ANIM_BATCH_COUNT
     private var batchCount = 0
     private val rect = Rect()
     private var widthOffset = -1f

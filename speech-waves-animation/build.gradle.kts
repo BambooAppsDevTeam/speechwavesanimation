@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "eu.bamboo.voiceanimation"
+    namespace = "eu.bamboo.speech_waves_animation"
     compileSdk = 33
 
     defaultConfig {

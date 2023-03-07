@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <eu.bamboo.voiceanimation.VoiceWave
+        <eu.bamboo.speech_waves_animation.LinesWaveView
             android:id="@+id/musicWave"
             android:layout_width="match_parent"
             android:layout_height="70dp"

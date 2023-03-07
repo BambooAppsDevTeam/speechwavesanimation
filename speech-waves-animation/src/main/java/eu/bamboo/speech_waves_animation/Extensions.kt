@@ -1,7 +1,7 @@
-package eu.bamboo.voiceanimation
+package eu.bamboo.speech_waves_animation
 
 fun <T> Array<T>.firstOrLast(index: Int): Boolean = index == 0 || index == size - 1
 
 fun Int.toAnimationSpeed(default: AnimationSpeed = AnimationSpeed.NORMAL): AnimationSpeed {
-    return eu.bamboo.voiceanimation.AnimationSpeed.values().find { it.ordinal == this } ?: default
+    return AnimationSpeed.values().find { it.ordinal == this } ?: default
 }

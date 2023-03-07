@@ -1,4 +1,4 @@
-package eu.bamboo.voiceanimation
+package eu.bamboo.speech_waves_animation
 
 import android.widget.SeekBar
 
