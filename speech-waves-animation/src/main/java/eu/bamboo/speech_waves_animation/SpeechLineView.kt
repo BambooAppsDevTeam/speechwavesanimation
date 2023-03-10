@@ -10,7 +10,7 @@ import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import kotlin.math.ceil
 
-class LinesWaveView @JvmOverloads constructor(
+class SpeechLineView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

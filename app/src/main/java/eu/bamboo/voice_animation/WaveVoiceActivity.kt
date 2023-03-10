@@ -124,16 +124,16 @@ class WaveVoiceActivity : AppCompatActivity() {
     }
 
     private fun setDefault() {
-        binding.seekBarDensity.progress = 12
+        binding.seekBarDensity.progress = 20
         binding.seekBarSpeed.progress = 1
         binding.seekBarLineCount.progress = 3
         binding.seekBarPadding.progress = 48
         binding.seekBarThickness.progress = 5
         binding.seekBarMiddleThickness.progress = 2
         binding.seekBarColorGradient.progress = 20
-        binding.colorStart.setText("#657082")
-        binding.colorEnd.setText("#282A2D")
-        binding.colorMiddle.setText("#282A2D")
+        binding.colorStart.setText("#0000ff")
+        binding.colorEnd.setText("#ffff00")
+        binding.colorMiddle.setText("#ff0000")
         applyColors()
     }
 
