@@ -14,10 +14,10 @@
         app:animationSpeed="NORMAL"
         app:endColor="#a9c6f4"
         app:gradientOffset="0.1"
-        app:lineCount="4"
+        app:lineCount="8"
         app:lineThickness="6"
         app:middleColor="#151764"
-        app:middleLineThickness="3"
+        app:middleLineThickness="5"
         app:startColor="#656ED1"
         app:waveDensity="0.2"
         app:windowPadding="0.24" />

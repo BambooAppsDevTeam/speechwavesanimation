@@ -2,13 +2,16 @@ package eu.bamboo.speech_waves_animation
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
-import kotlin.math.ceil
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 class SpeechLineView @JvmOverloads constructor(
     context: Context,
@@ -17,20 +20,10 @@ class SpeechLineView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     private var rawAudioBytes: ByteArray? = null
-    private var pointCount: Int = EXTREMUM_NUMBER_MAX
-    private var points: Array<Point> = Array(pointCount + 1) { Point(0f, 0f) }
-    private var bezierControlStartPoints: Array<Point> = Array(pointCount + 1) { Point(0f, 0f) }
-    private var bezierControlEndPoints: Array<Point> = Array(pointCount + 1) { Point(0f, 0f) }
-    private var sourceY: FloatArray = FloatArray(pointCount + 1)
-    private var destinationY: FloatArray = FloatArray(pointCount + 1)
     private var maxBatchCount = MAX_ANIM_BATCH_COUNT
-    private var batchCount = 0
     private val rect = Rect()
-    private var widthOffset = -1f
 
-    @FloatRange(from = 0.0,to = 0.5)
-    var windowPadding = DEFAULT_WINDOW_PADDING
-    val wavePaintConfig: WavePaintConfig = WavePaintConfig(context, attrs)
+    private val wavePaintConfig: WavePaintConfig = WavePaintConfig(context, attrs)
 
     private var pathList: Array<Path> = emptyArray()
     private var linesOffset = 1f
@@ -41,15 +34,6 @@ class SpeechLineView @JvmOverloads constructor(
             pathList = Array(value) { Path() }
             linesOffset = if (value == 1) 1f else 2f / (value - 1)
         }
-    @FloatRange(from = 0.1,to = 1.0)
-    var density = DEFAULT_DENSITY
-        set(value) {
-            field = value
-            pointCount = (EXTREMUM_NUMBER_MAX * field).toInt()
-            if (pointCount < EXTREMUM_NUMBER_MIN) pointCount = EXTREMUM_NUMBER_MIN
-            createArraysIfChanged()
-            widthOffset = -1f
-        }
     var speed: AnimationSpeed = AnimationSpeed.NORMAL
         set(value) {
             field = value
@@ -59,13 +43,10 @@ class SpeechLineView @JvmOverloads constructor(
     init {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.VoiceWave, 0, 0)
         if (attrs != null) {
-            density = a.getFloat(R.styleable.VoiceWave_waveDensity, DEFAULT_DENSITY)
             speed = a.getColor(R.styleable.VoiceWave_animationSpeed, AnimationSpeed.NORMAL.ordinal).toAnimationSpeed()
             pathCount = a.getColor(R.styleable.VoiceWave_lineCount, DEFAULT_PATH_COUNT)
-            windowPadding = a.getFloat(R.styleable.VoiceWave_windowPadding, DEFAULT_WINDOW_PADDING)
             a.recycle()
         }
-        createArraysIfChanged()
     }
 
     fun updateVisualizer(bytes: ByteArray?) {
@@ -80,117 +61,50 @@ class SpeechLineView @JvmOverloads constructor(
 
         rect.set(0, 0, width, height)
 
-        initializeBezierPoints()
-        findDestinationBezierPointForBatch(bytes)
-        smoothAnimation()
-        calculateBezierCurveControlPoints()
-
         wavePaintConfig.updatePaint()
 
         drawPath(canvas)
     }
 
-    private fun createArraysIfChanged() {
-        points = Array(pointCount + 1) { Point(0f, 0f) }
-        bezierControlStartPoints = Array(pointCount + 1) { Point(0f, 0f) }
-        bezierControlEndPoints = Array(pointCount + 1) { Point(0f, 0f) }
-        sourceY = FloatArray(pointCount + 1)
-        destinationY = FloatArray(pointCount + 1)
-    }
-
-    private fun initializeBezierPoints() {
-        val heightCenter = rect.height() / 2
-        if (widthOffset == -1f) {
-            widthOffset = (rect.width() / pointCount).toFloat()
-
-            for (i in points.indices) {
-                val posX = rect.left + i * widthOffset
-                val posY = heightCenter.toFloat()
-                sourceY[i] = posY
-                destinationY[i] = posY
-                points[i].x = posX
-                points[i].y = posY
-            }
-        }
-    }
-
-    private fun findDestinationBezierPointForBatch(rawAudioBytes: ByteArray) {
-        val heightCenter = rect.height() / 2f
-        val paddingHorizontal = AXIS_X_WIDTH * windowPadding
-        if (batchCount == 0) {
-            val lastPosY = destinationY.last()
-            for (i in points.indices) {
-                val x = ceil(((i) * (rawAudioBytes.size / pointCount)).toDouble()).toInt()
-                val posY = if (x > paddingHorizontal && x < AXIS_X_WIDTH - paddingHorizontal) {
-                    heightCenter + (rawAudioBytes[x] + BYTE_SIZE).toByte() * heightCenter / BYTE_SIZE
-                } else {
-                    heightCenter
-                }
-
-                sourceY[i] = destinationY[i]
-                destinationY[i] = posY
-            }
-            destinationY[points.size - 1] = lastPosY
-        }
-    }
-
-    private fun smoothAnimation() {
-        batchCount++
-
-        for (i in points.indices) {
-            points[i].y = sourceY[i] + batchCount.toFloat() / maxBatchCount * (destinationY[i] - sourceY[i])
-        }
-
-        if (batchCount == maxBatchCount) batchCount = 0
-    }
-
-    private fun calculateBezierCurveControlPoints() {
-        for (i in 1 until points.size) {
-            val bezierControlX = (points[i].x + points[i - 1].x) / 2
-            bezierControlStartPoints[i].x = bezierControlX
-            bezierControlStartPoints[i].y = points[i - 1].y
-            bezierControlEndPoints[i].x = bezierControlX
-            bezierControlEndPoints[i].y = points[i].y
-        }
-    }
+    private val colors = arrayOf(Color.BLUE, Color.CYAN, Color.MAGENTA, Color.DKGRAY, Color.YELLOW, Color.BLACK, Color.LTGRAY, Color.GRAY)
 
     private fun drawPath(canvas: Canvas) {
+        val bytes = rawAudioBytes?.filter { abs(it.toInt()) < BYTE_SIZE } ?: return
+        val batchCount = bytes.count()
+        val batch2Count = BYTE_SIZE / pathCount
+        val width = rect.width().toFloat()
+        val widthCenter = width / 2
+        val heightCenter = 0f //rect.height() / 2f
+        val density = width / batchCount
+        val leftBytes = bytes.filter { it >= 0 }
+        val rightBytes = bytes.filter { it <= 0 }
+
+        wavePaintConfig.setMainLine(false, this)
+        wavePaintConfig.middleColor = Color.RED
+//        wavePaintConfig.paintWave.style = Paint.Style.FILL
+        canvas.drawLine(0f, heightCenter, width, heightCenter, wavePaintConfig.paintWave)
+//        canvas.drawRect(0f, heightCenter, width, rect.height().toFloat(), wavePaintConfig.paintWave)
+
+        wavePaintConfig.paintWave.style = Paint.Style.STROKE
         pathList.forEachIndexed { index, path ->
             path.rewind()
 
-            val coefficient = 1 - index * linesOffset
-            path.moveTo(points[0].x, getRelativeY(points[0].y, coefficient))
-            for (i in 1 until points.size) {
-                path.cubicTo(
-                    bezierControlStartPoints[i].x,
-                    getRelativeY(bezierControlStartPoints[i].y, coefficient),
-                    bezierControlEndPoints[i].x,
-                    getRelativeY(bezierControlEndPoints[i].y, coefficient),
-                    points[i].x,
-                    getRelativeY(points[i].y, coefficient)
-                )
-            }
+            val start = leftBytes.count { it > batch2Count * index }
+            val end = rightBytes.count { it < -batch2Count * index }
+            val startX = max(widthCenter - start * density, 0f)
+            val endX = min(widthCenter + end * density, width)
 
-            val isMainLine = pathList.firstOrLast(index)
-            wavePaintConfig.setMainLine(isMainLine, this)
+            path.moveTo(startX, heightCenter + index * 16)
+            path.lineTo(endX, heightCenter + index * 16)
+
+            wavePaintConfig.middleColor = colors[index]
 
             canvas.drawPath(path, wavePaintConfig.paintWave)
         }
     }
 
-    private fun getRelativeY(y: Float, coefficient: Float): Float {
-        val heightCenter = rect.height() / 2
-        val diff = y - heightCenter
-        return heightCenter + diff * coefficient
-    }
-
     companion object {
-        private const val EXTREMUM_NUMBER_MAX = 54
-        private const val EXTREMUM_NUMBER_MIN = 3
-        private const val DEFAULT_DENSITY = 0.2f
         private const val MAX_ANIM_BATCH_COUNT = 4
-        private const val AXIS_X_WIDTH = 1024
-        private const val DEFAULT_WINDOW_PADDING = 0.24f
         private const val DEFAULT_PATH_COUNT = 4
         private const val BYTE_SIZE = 128
     }
