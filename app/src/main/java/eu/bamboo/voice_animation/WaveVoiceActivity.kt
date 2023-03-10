@@ -7,14 +7,13 @@ import android.os.Bundle
 import android.widget.SeekBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import eu.bamboo.voice_animation.databinding.ActivityVoiceBinding
-import eu.bamboo.speech_waves_animation.OnSeekBarChangeListener
 import eu.bamboo.speech_waves_animation.VoiceVisualizer
 import eu.bamboo.speech_waves_animation.toAnimationSpeed
+import eu.bamboo.voice_animation.databinding.ActivityWaveVoiceBinding
 
-class VoiceActivity : AppCompatActivity() {
+class WaveVoiceActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityVoiceBinding
+    private lateinit var binding: ActivityWaveVoiceBinding
 
     private lateinit var mediaPlayer: MediaPlayer
 
@@ -26,7 +25,7 @@ class VoiceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityVoiceBinding.inflate(layoutInflater)
+        binding = ActivityWaveVoiceBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
@@ -125,16 +124,16 @@ class VoiceActivity : AppCompatActivity() {
     }
 
     private fun setDefault() {
-        binding.seekBarDensity.progress = 20
+        binding.seekBarDensity.progress = 12
         binding.seekBarSpeed.progress = 1
         binding.seekBarLineCount.progress = 3
         binding.seekBarPadding.progress = 48
         binding.seekBarThickness.progress = 5
         binding.seekBarMiddleThickness.progress = 2
         binding.seekBarColorGradient.progress = 20
-        binding.colorStart.setText("#0000ff")
-        binding.colorEnd.setText("#ffff00")
-        binding.colorMiddle.setText("#ff0000")
+        binding.colorStart.setText("#657082")
+        binding.colorEnd.setText("#282A2D")
+        binding.colorMiddle.setText("#282A2D")
         applyColors()
     }
 

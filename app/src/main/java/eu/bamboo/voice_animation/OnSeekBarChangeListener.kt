@@ -1,8 +1,8 @@
-package eu.bamboo.speech_waves_animation
+package eu.bamboo.voice_animation
 
 import android.widget.SeekBar
 
-public abstract class OnSeekBarChangeListener: SeekBar.OnSeekBarChangeListener {
+abstract class OnSeekBarChangeListener: SeekBar.OnSeekBarChangeListener {
 
     override fun onStartTrackingTouch(seekBar: SeekBar) { }
 
