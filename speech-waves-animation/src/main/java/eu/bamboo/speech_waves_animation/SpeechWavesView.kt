@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
-import kotlin.math.ceil
+import kotlin.math.round
 
 class SpeechWavesView @JvmOverloads constructor(
     context: Context,
@@ -120,7 +120,7 @@ class SpeechWavesView @JvmOverloads constructor(
         if (batchCount == 0) {
             val lastPosY = destinationY.last()
             for (i in points.indices) {
-                val x = ceil(((i) * (rawAudioBytes.size / pointCount)).toDouble()).toInt()
+                val x = round(i * (rawAudioBytes.size / pointCount.toFloat())).toInt()
                 val posY = if (x > paddingHorizontal && x < AXIS_X_WIDTH - paddingHorizontal) {
                     heightCenter + (rawAudioBytes[x] + BYTE_SIZE).toByte() * heightCenter / BYTE_SIZE
                 } else {
