@@ -1,4 +1,4 @@
-package eu.bamboo.speech_waves_animation
+package eu.bamboo.speech_waves_animation.wave
 
 import android.content.Context
 import android.graphics.Color
@@ -8,6 +8,7 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.FloatRange
+import eu.bamboo.speech_waves_animation.R
 
 class WavePaintConfig(context: Context, attrs: AttributeSet?) {
 

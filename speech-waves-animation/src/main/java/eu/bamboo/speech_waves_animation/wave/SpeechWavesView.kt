@@ -1,4 +1,4 @@
-package eu.bamboo.speech_waves_animation
+package eu.bamboo.speech_waves_animation.wave
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,6 +8,11 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
+import eu.bamboo.speech_waves_animation.AnimationSpeed
+import eu.bamboo.speech_waves_animation.Point
+import eu.bamboo.speech_waves_animation.R
+import eu.bamboo.speech_waves_animation.firstOrLast
+import eu.bamboo.speech_waves_animation.toAnimationSpeed
 import kotlin.math.round
 
 class SpeechWavesView @JvmOverloads constructor(

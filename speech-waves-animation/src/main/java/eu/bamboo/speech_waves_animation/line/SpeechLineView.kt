@@ -1,4 +1,4 @@
-package eu.bamboo.speech_waves_animation
+package eu.bamboo.speech_waves_animation.line
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,6 +8,8 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.IntRange
+import eu.bamboo.speech_waves_animation.AnimationSpeed
+import eu.bamboo.speech_waves_animation.R
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

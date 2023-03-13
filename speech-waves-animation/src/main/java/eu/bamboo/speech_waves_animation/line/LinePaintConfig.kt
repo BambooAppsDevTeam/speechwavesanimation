@@ -1,9 +1,10 @@
-package eu.bamboo.speech_waves_animation
+package eu.bamboo.speech_waves_animation.line
 
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import eu.bamboo.speech_waves_animation.R
 
 class LinePaintConfig(context: Context, attrs: AttributeSet?) {
 

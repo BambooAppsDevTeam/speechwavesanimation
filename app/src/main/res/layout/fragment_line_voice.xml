@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <eu.bamboo.speech_waves_animation.SpeechLineView
+    <eu.bamboo.speech_waves_animation.line.SpeechLineView
         android:id="@+id/musicLine"
         android:layout_width="match_parent"
         android:layout_height="8dp"
@@ -15,7 +15,7 @@
         app:lineCount="2"
         app:symmetry="true" />
 
-    <eu.bamboo.speech_waves_animation.SpeechWavesView
+    <eu.bamboo.speech_waves_animation.wave.SpeechWavesView
         android:id="@+id/musicWave"
         android:layout_width="match_parent"
         android:layout_height="70dp"
