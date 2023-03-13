@@ -23,7 +23,7 @@
             app:middleColor="#151764"
             app:middleLineThickness="3"
             app:startColor="#656ED1"
-            app:waveDensity="0.2"
+            app:density="0.2"
             app:windowPadding="0.24" />
 
         <com.google.android.material.textfield.TextInputLayout

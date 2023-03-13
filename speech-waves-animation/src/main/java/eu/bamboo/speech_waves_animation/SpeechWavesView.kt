@@ -59,7 +59,7 @@ class SpeechWavesView @JvmOverloads constructor(
     init {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.VoiceWave, 0, 0)
         if (attrs != null) {
-            density = a.getFloat(R.styleable.VoiceWave_waveDensity, DEFAULT_DENSITY)
+            density = a.getFloat(R.styleable.VoiceWave_density, DEFAULT_DENSITY)
             speed = a.getColor(R.styleable.VoiceWave_animationSpeed, AnimationSpeed.NORMAL.ordinal).toAnimationSpeed()
             pathCount = a.getColor(R.styleable.VoiceWave_lineCount, DEFAULT_PATH_COUNT)
             windowPadding = a.getFloat(R.styleable.VoiceWave_windowPadding, DEFAULT_WINDOW_PADDING)
