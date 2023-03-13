@@ -1,33 +1,37 @@
 package eu.bamboo.voice_animation
 
-import android.Manifest
 import android.media.MediaPlayer
 import android.media.audiofx.Visualizer
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import eu.bamboo.speech_waves_animation.VoiceVisualizer
 import eu.bamboo.speech_waves_animation.toAnimationSpeed
-import eu.bamboo.voice_animation.databinding.ActivityWaveVoiceBinding
+import eu.bamboo.voice_animation.databinding.FragmentWaveVoiceBinding
 
-class WaveVoiceActivity : AppCompatActivity() {
+class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
 
-    private lateinit var binding: ActivityWaveVoiceBinding
+    private var _binding: FragmentWaveVoiceBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var mediaPlayer: MediaPlayer
 
     private var visualizer: Visualizer? = null
 
-    private val neededPermissionsArray = listOfNotNull(
-        Manifest.permission.RECORD_AUDIO
-    ).toTypedArray()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentWaveVoiceBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityWaveVoiceBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.applyColors.setOnClickListener {
             applyColors()
@@ -36,13 +40,13 @@ class WaveVoiceActivity : AppCompatActivity() {
         setBarListeners()
         setDefault()
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.voice_main_feature_5)
+        mediaPlayer = MediaPlayer.create(context, R.raw.voice_main_feature_5)
     }
 
     override fun onStart() {
         super.onStart()
 
-        startMediaPlayerIfPermitted()
+        startMediaPlayer()
     }
 
     override fun onStop() {
@@ -51,6 +55,19 @@ class WaveVoiceActivity : AppCompatActivity() {
         visualizer?.release()
 
         super.onStop()
+    }
+
+    private fun startMediaPlayer() {
+        mediaPlayer.start()
+
+        val id = mediaPlayer.audioSessionId
+        if (id != -1) {
+            setAudioSessionId(id)
+        }
+
+        mediaPlayer.setOnCompletionListener {
+            mediaPlayer.start()
+        }
     }
 
     private fun setAudioSessionId(audioSessionId: Int) {
@@ -149,35 +166,6 @@ class WaveVoiceActivity : AppCompatActivity() {
         binding.musicWave.wavePaintConfig.startColor = startColor
         binding.musicWave.wavePaintConfig.endColor = endColor
         binding.musicWave.wavePaintConfig.middleColor = middleColor
-    }
-
-    private fun startMediaPlayerIfPermitted() {
-        if (appHasAudioRecordPermissions()) {
-            startMediaPlayer()
-        } else {
-            registerForActivityResult(
-                ActivityResultContracts.RequestMultiplePermissions()
-            ) { resultMap ->
-                neededPermissionsArray
-                    .all { resultMap[it] ?: false }
-                    .then { startMediaPlayer() }
-            }.launch(neededPermissionsArray)
-        }
-    }
-
-    private fun appHasAudioRecordPermissions() = neededPermissionsArray.all { hasPermission(it) }
-
-    private fun startMediaPlayer() {
-        mediaPlayer.start()
-
-        val id = mediaPlayer.audioSessionId
-        if (id != -1) {
-            setAudioSessionId(id)
-        }
-
-        mediaPlayer.setOnCompletionListener {
-            mediaPlayer.start()
-        }
     }
 
 }

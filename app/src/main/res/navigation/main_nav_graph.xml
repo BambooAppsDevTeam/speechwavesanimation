@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="eu.bamboo.voice_animation.MenuFragment" />
+
+    <fragment
+        android:id="@+id/waveAnimationFragment"
+        android:name="eu.bamboo.voice_animation.WaveVoiceFragment" />
+
+    <fragment
+        android:id="@+id/lineAnimationFragment"
+        android:name="eu.bamboo.voice_animation.LineVoiceFragment" />
+
+</navigation>
