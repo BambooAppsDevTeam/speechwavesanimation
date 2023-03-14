@@ -18,8 +18,17 @@
         <attr name="lineCount" />
         <attr name="windowPadding" format="float" />
     </declare-styleable>
+
     <declare-styleable name="VoiceLine">
-        <attr name="color" format="color" />
+        <attr name="color1" format="color" />
+        <attr name="color2" format="color" />
+        <attr name="color3" format="color" />
+        <attr name="color4" format="color" />
+        <attr name="color5" format="color" />
+        <attr name="color6" format="color" />
+        <attr name="color7" format="color" />
+        <attr name="color8" format="color" />
+        <attr name="baseColor" format="color" />
         <attr name="symmetry" format="boolean" />
         <attr name="lineCount" />
     </declare-styleable>

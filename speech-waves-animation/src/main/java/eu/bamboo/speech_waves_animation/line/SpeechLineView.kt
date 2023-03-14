@@ -2,7 +2,6 @@ package eu.bamboo.speech_waves_animation.line
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
@@ -25,7 +24,7 @@ class SpeechLineView @JvmOverloads constructor(
     private var batchCount = 0
     private val rect = Rect()
 
-    private val linePaintConfig: LinePaintConfig = LinePaintConfig(context, attrs)
+    val linePaintConfig: LinePaintConfig = LinePaintConfig(context, attrs)
 
     @IntRange(from = 1, to = 8)
     var lineCount = DEFAULT_PATH_COUNT
@@ -45,7 +44,6 @@ class SpeechLineView @JvmOverloads constructor(
     init {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.VoiceLine, 0, 0)
         if (attrs != null) {
-            val density = a.getFloat(R.styleable.VoiceWave_density, 0.2f)
 //            speed = a.getColor(R.styleable.VoiceLine_animationSpeed, AnimationSpeed.NORMAL.ordinal).toAnimationSpeed()
             symmetry = a.getBoolean(R.styleable.VoiceLine_symmetry, true)
             lineCount = a.getColor(R.styleable.VoiceLine_lineCount, DEFAULT_PATH_COUNT)
@@ -74,23 +72,10 @@ class SpeechLineView @JvmOverloads constructor(
         drawAmplitudes(canvas, bytes)
     }
 
-    private val colors = arrayOf(
-//        Color.parseColor("#1D4A76"),
-        Color.parseColor("#1A5B9C"),
-        Color.parseColor("#4493E2"),
-        Color.RED,
-        Color.DKGRAY,
-        Color.YELLOW,
-        Color.BLACK,
-        Color.LTGRAY,
-        Color.CYAN
-    )
-
     private fun drawBackground(canvas: Canvas) {
         val width = rect.width().toFloat()
         val height = rect.height().toFloat()
 
-        linePaintConfig.color = Color.parseColor("#1D4A76")
         linePaintConfig.paintWave.style = Paint.Style.FILL
         canvas.drawRect(0f, 0f, width, height, linePaintConfig.paintWave)
     }
@@ -159,7 +144,7 @@ class SpeechLineView @JvmOverloads constructor(
             val startX = max(widthCenter - pair.first * density, 0f)
             val endX = min(widthCenter + pair.second * density, width)
 
-            linePaintConfig.color = colors[index]
+            linePaintConfig.setColor(linePaintConfig.colorList[index])
 
             canvas.drawRect(startX, 0f, endX, height, linePaintConfig.paintWave)
         }
