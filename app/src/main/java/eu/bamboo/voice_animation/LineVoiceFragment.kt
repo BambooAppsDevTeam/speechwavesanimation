@@ -31,7 +31,7 @@ class LineVoiceFragment : Fragment(R.layout.fragment_line_voice) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mediaPlayer = MediaPlayer.create(context, R.raw.voice_main_feature_5)
+        mediaPlayer = MediaPlayer.create(context, R.raw.audio)
     }
 
     override fun onStart() {

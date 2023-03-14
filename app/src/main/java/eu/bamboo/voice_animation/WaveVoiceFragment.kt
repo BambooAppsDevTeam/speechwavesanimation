@@ -40,7 +40,7 @@ class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
         setBarListeners()
         setDefault()
 
-        mediaPlayer = MediaPlayer.create(context, R.raw.voice_main_feature_5)
+        mediaPlayer = MediaPlayer.create(context, R.raw.audio)
     }
 
     override fun onStart() {
