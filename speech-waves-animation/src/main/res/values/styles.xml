@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="density" format="float" />
     <attr name="lineCount" format="integer" />
 
     <declare-styleable name="VoiceWave">
@@ -10,7 +9,7 @@
         <attr name="startColor" format="color" />
         <attr name="endColor" format="color" />
         <attr name="middleColor" format="color" />
-        <attr name="density" />
+        <attr name="density" format="float" />
         <attr name="animationSpeed" format="enum">
             <enum name="SLOW" value="0"/>
             <enum name="NORMAL" value="1"/>
@@ -22,7 +21,6 @@
     <declare-styleable name="VoiceLine">
         <attr name="color" format="color" />
         <attr name="symmetry" format="boolean" />
-        <attr name="density" />
         <attr name="lineCount" />
     </declare-styleable>
 </resources>

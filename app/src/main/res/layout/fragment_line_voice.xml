@@ -11,25 +11,7 @@
         android:layout_marginVertical="20dp"
         app:animationSpeed="SLOW"
         app:color="#a9c6f4"
-        app:density="0.2"
         app:lineCount="2"
         app:symmetry="true" />
-
-    <eu.bamboo.speech_waves_animation.wave.SpeechWavesView
-        android:id="@+id/musicWave"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_gravity="bottom"
-        android:layout_marginVertical="20dp"
-        app:animationSpeed="NORMAL"
-        app:density="0.2"
-        app:endColor="#a9c6f4"
-        app:gradientOffset="0.1"
-        app:lineCount="4"
-        app:lineThickness="6"
-        app:middleColor="#151764"
-        app:middleLineThickness="3"
-        app:startColor="#656ED1"
-        app:windowPadding="0.24" />
 
 </FrameLayout>
