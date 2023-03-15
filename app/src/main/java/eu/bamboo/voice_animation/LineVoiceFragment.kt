@@ -96,7 +96,7 @@ class LineVoiceFragment : Fragment(R.layout.fragment_line_voice) {
     private fun setDefault() {
         binding.symmetry.isChecked = true
         binding.seekBarLineCount.progress = 7
-        binding.colorBase.setText("#a9c6f4")
+        binding.colorBase.setText("#1D4A76")
         binding.color1.setText("#4493E2")
         binding.color2.setText("#1A5B9C")
         binding.color3.setText("#ff0000")

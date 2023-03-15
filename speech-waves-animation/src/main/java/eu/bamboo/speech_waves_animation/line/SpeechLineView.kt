@@ -28,6 +28,10 @@ class SpeechLineView @JvmOverloads constructor(
 
     @IntRange(from = 1, to = 8)
     var lineCount = DEFAULT_PATH_COUNT
+        set(value) {
+            field = value
+            createArraysIfChanged()
+        }
 
     var symmetry = true
 
@@ -37,9 +41,9 @@ class SpeechLineView @JvmOverloads constructor(
             maxBatchCount = MAX_ANIM_BATCH_COUNT - field.ordinal
         }
 
-    private var prevAmplitudes: List<Pair<Int, Int>> = emptyList()
-    private var currentAmplitudes: List<Pair<Int, Int>> = emptyList()
-    private var amplitudes: MutableList<Pair<Float, Float>> = mutableListOf()
+    private var prevAmplitudes: Array<Pair<Int, Int>> = Array(lineCount) { Pair(0, 0) }
+    private var currentAmplitudes: Array<Pair<Int, Int>> = Array(lineCount) { Pair(0, 0) }
+    private var amplitudes: Array<Pair<Float, Float>> = Array(lineCount) { Pair(0f, 0f) }
 
     init {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.VoiceLine, 0, 0)
@@ -49,6 +53,7 @@ class SpeechLineView @JvmOverloads constructor(
             lineCount = a.getColor(R.styleable.VoiceLine_lineCount, DEFAULT_PATH_COUNT)
             a.recycle()
         }
+        createArraysIfChanged()
     }
 
     fun updateVisualizer(bytes: ByteArray?) {
@@ -93,7 +98,7 @@ class SpeechLineView @JvmOverloads constructor(
 //        Log.d("Ololo", "fibonacciBatchCount = $fibonacciBatchCount")
 //        Log.d("Ololo", "pathCount = $pathCount")
 //        Log.d("Ololo", "bytes = $bytes")
-        val barList = mutableListOf<Pair<Int, Int>>()
+//        val barList = mutableListOf<Pair<Int, Int>>()
         for (index in 0 until lineCount) {
             val start: Int
             val end: Int
@@ -111,10 +116,9 @@ class SpeechLineView @JvmOverloads constructor(
 //            Log.d("Ololo", "i = $i")
 //            val start = bytes.count { it > i }
 //            val end = bytes.count { it < -i }
-            barList.add(Pair(start, end))
+            prevAmplitudes[index] = currentAmplitudes[index]
+            currentAmplitudes[index] = Pair(start, end)
         }
-        prevAmplitudes = currentAmplitudes
-        currentAmplitudes = barList
         if (prevAmplitudes.isEmpty()) {
             prevAmplitudes = currentAmplitudes
         }
@@ -122,12 +126,15 @@ class SpeechLineView @JvmOverloads constructor(
 
     private fun smoothAnimation() {
         batchCount++
-        amplitudes.clear()
 
         for (i in currentAmplitudes.indices) {
             val amplitudeLeft = prevAmplitudes[i].first + batchCount.toFloat() / maxBatchCount * (currentAmplitudes[i].first - prevAmplitudes[i].first)
-            val amplitudeRight = prevAmplitudes[i].second + batchCount.toFloat() / maxBatchCount * (currentAmplitudes[i].second - prevAmplitudes[i].second)
-            amplitudes.add(Pair(amplitudeLeft, amplitudeRight))
+            val amplitudeRight = if (!symmetry) {
+                prevAmplitudes[i].second + batchCount.toFloat() / maxBatchCount * (currentAmplitudes[i].second - prevAmplitudes[i].second)
+            } else {
+                amplitudeLeft
+            }
+            amplitudes[i] = Pair(amplitudeLeft, amplitudeRight)
         }
 
         if (batchCount == maxBatchCount) batchCount = 0
@@ -148,6 +155,14 @@ class SpeechLineView @JvmOverloads constructor(
 
             canvas.drawRect(startX, 0f, endX, height, linePaintConfig.paintWave)
         }
+    }
+
+    private fun createArraysIfChanged() {
+        if (amplitudes.size == lineCount) return
+
+        prevAmplitudes = Array(lineCount) { Pair(0, 0) }
+        currentAmplitudes = Array(lineCount) { Pair(0, 0) }
+        amplitudes = Array(lineCount) { Pair(0f, 0f) }
     }
 
     companion object {
