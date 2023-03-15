@@ -23,6 +23,7 @@ class SpeechLineView @JvmOverloads constructor(
     private var maxBatchCount = MAX_ANIM_BATCH_COUNT
     private var batchCount = 0
     private val rect = Rect()
+    private val fibonacci = byteArrayOf(1, 2, 3, 5, 8, 13, 21, 34)
 
     val linePaintConfig: LinePaintConfig = LinePaintConfig(context, attrs)
 
@@ -85,37 +86,24 @@ class SpeechLineView @JvmOverloads constructor(
         canvas.drawRect(0f, 0f, width, height, linePaintConfig.paintWave)
     }
 
-//    private val fibonacci = byteArrayOf(1, 2, 3, 5, 8, 13, 21, 34)
-
     private fun calculateAmplitudes(bytes: List<Byte>) {
-        val temp = 8
-        val batchCount = BYTE_SIZE / (lineCount + temp)
-//        val fibonacci = this.fibonacci.take(pathCount)
-//        val fibonacciBatchCount = fibonacci.sum()
-//        val batchCount = BYTE_SIZE / fibonacciBatchCount.toFloat()
-//        Log.d("Ololo", "batchCount = $batchCount")
-//        Log.d("Ololo", "fibonacci = ${fibonacci.joinToString()}")
-//        Log.d("Ololo", "fibonacciBatchCount = $fibonacciBatchCount")
-//        Log.d("Ololo", "pathCount = $pathCount")
-//        Log.d("Ololo", "bytes = $bytes")
-//        val barList = mutableListOf<Pair<Int, Int>>()
+        val fibonacci = this.fibonacci.take(lineCount + 1)
+        val fibonacciBatchCount = fibonacci.sum()
+        val batchCount = BYTE_SIZE / fibonacciBatchCount.toFloat()
         for (index in 0 until lineCount) {
+            val sum = fibonacci.take(index + 1).sum()
+            val i = BYTE_SIZE - batchCount * sum
+
             val start: Int
             val end: Int
 
             if (symmetry) {
-                start = bytes.count { abs(it.toInt()) > batchCount * (index + temp) }
+                start = bytes.count { abs(it.toInt()) > i } / 2
                 end = start
             } else {
-                start = bytes.count { it > batchCount * (index + temp) }
-                end = bytes.count { it < -batchCount * (index + temp) }
+                start = bytes.count { it > i }
+                end = bytes.count { it < -i }
             }
-//            val sum = fibonacci.take(index + 1).sum()
-//            Log.d("Ololo", "sum = $sum")
-//            val i = 128 - batchCount * sum
-//            Log.d("Ololo", "i = $i")
-//            val start = bytes.count { it > i }
-//            val end = bytes.count { it < -i }
             prevAmplitudes[index] = currentAmplitudes[index]
             currentAmplitudes[index] = Pair(start, end)
         }
@@ -147,7 +135,10 @@ class SpeechLineView @JvmOverloads constructor(
         val widthCenter = width / 2
         val density = width / batchCount
 
-        amplitudes.forEachIndexed { index, pair ->
+        amplitudes.withIndex().reversed().forEach { indexedValue ->
+            val index = indexedValue.index
+            val pair = indexedValue.value
+
             val startX = max(widthCenter - pair.first * density, 0f)
             val endX = min(widthCenter + pair.second * density, width)
 
