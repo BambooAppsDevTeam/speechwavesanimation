@@ -9,6 +9,7 @@ import android.view.View
 import androidx.annotation.IntRange
 import eu.bamboo.speech_waves_animation.AnimationSpeed
 import eu.bamboo.speech_waves_animation.R
+import eu.bamboo.speech_waves_animation.toAnimationSpeed
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -39,7 +40,7 @@ class SpeechLineView @JvmOverloads constructor(
     var speed: AnimationSpeed = AnimationSpeed.NORMAL
         set(value) {
             field = value
-            maxBatchCount = MAX_ANIM_BATCH_COUNT - field.ordinal
+            maxBatchCount = MAX_ANIM_BATCH_COUNT - field.ordinal * SPEED_MODIFIER
         }
 
     private var prevAmplitudes: Array<Pair<Int, Int>> = Array(lineCount) { Pair(0, 0) }
@@ -49,7 +50,7 @@ class SpeechLineView @JvmOverloads constructor(
     init {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.VoiceLine, 0, 0)
         if (attrs != null) {
-//            speed = a.getColor(R.styleable.VoiceLine_animationSpeed, AnimationSpeed.NORMAL.ordinal).toAnimationSpeed()
+            speed = a.getColor(R.styleable.VoiceLine_lineSpeed, AnimationSpeed.NORMAL.ordinal).toAnimationSpeed()
             symmetry = a.getBoolean(R.styleable.VoiceLine_symmetry, true)
             lineCount = a.getColor(R.styleable.VoiceLine_lineCount, DEFAULT_PATH_COUNT)
             a.recycle()
@@ -157,7 +158,8 @@ class SpeechLineView @JvmOverloads constructor(
     }
 
     companion object {
-        private const val MAX_ANIM_BATCH_COUNT = 4
+        private const val MAX_ANIM_BATCH_COUNT = 40
+        private const val SPEED_MODIFIER = 10
         private const val DEFAULT_PATH_COUNT = 2
         private const val BYTE_SIZE = 128
     }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import eu.bamboo.speech_waves_animation.VoiceVisualizer
+import eu.bamboo.speech_waves_animation.toAnimationSpeed
 import eu.bamboo.voice_animation.databinding.FragmentLineVoiceBinding
 
 class LineVoiceFragment : Fragment(R.layout.fragment_line_voice) {
@@ -91,11 +92,19 @@ class LineVoiceFragment : Fragment(R.layout.fragment_line_voice) {
                 binding.musicLine.lineCount = lineCount
             }
         })
+        binding.seekBarSpeed.setOnSeekBarChangeListener(object : OnSeekBarChangeListener() {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                val speed = progress.toAnimationSpeed()
+                binding.titleSpeed.text = "Change Speed: $speed"
+                binding.musicLine.speed = speed
+            }
+        })
     }
 
     private fun setDefault() {
         binding.symmetry.isChecked = true
         binding.seekBarLineCount.progress = 7
+        binding.seekBarSpeed.progress = 1
         binding.colorBase.setText("#1D4A76")
         binding.color1.setText("#4493E2")
         binding.color2.setText("#1A5B9C")
@@ -104,7 +113,7 @@ class LineVoiceFragment : Fragment(R.layout.fragment_line_voice) {
         binding.color5.setText("#00ff00")
         binding.color6.setText("#00ffff")
         binding.color7.setText("#ffff00")
-        binding.color8.setText("#999999")
+        binding.color8.setText("#888888")
         applyColors()
     }
 

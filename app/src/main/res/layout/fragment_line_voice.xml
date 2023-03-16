@@ -15,11 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="8dp"
             android:layout_marginVertical="20dp"
-            app:animationSpeed="SLOW"
+            app:baseColor="#1D4A76"
             app:color1="#4493E2"
             app:color2="#1A5B9C"
-            app:baseColor="#a9c6f4"
             app:lineCount="2"
+            app:lineSpeed="slow"
             app:symmetry="true" />
 
         <androidx.appcompat.widget.SwitchCompat
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Symmetry"/>
+            android:text="Symmetry" />
 
         <TextView
             android:id="@+id/titleLineCount"
@@ -44,6 +44,20 @@
             android:layout_height="wrap_content"
             android:max="7" />
 
+        <TextView
+            android:id="@+id/titleSpeed"
+            style="@style/SeekBarTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change Speed: null" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBarSpeed"
+            style="@style/SeekBarConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="2" />
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/ColorTextInput"
             android:layout_width="match_parent"
@@ -56,7 +70,7 @@
                 style="@style/ColorEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="#a9c6f4" />
+                android:text="#1D4A76" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,7 +198,7 @@
                 style="@style/ColorEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="#999999" />
+                android:text="#888888" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
