@@ -1,14 +1,15 @@
 package eu.bamboo.voice_animation
 
 import android.media.MediaPlayer
-import android.media.audiofx.Visualizer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
-import eu.bamboo.speech_waves_animation.VoiceVisualizer
 import eu.bamboo.speech_waves_animation.toAnimationSpeed
 import eu.bamboo.voice_animation.databinding.FragmentWaveVoiceBinding
 
@@ -18,8 +19,7 @@ class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
     private val binding get() = _binding!!
 
     private lateinit var mediaPlayer: MediaPlayer
-
-    private var visualizer: Visualizer? = null
+    private val player = StreamPlayer()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,40 +46,55 @@ class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
     override fun onStart() {
         super.onStart()
 
-        startMediaPlayer()
+//        Thread(Runnable {
+//            startMediaPlayer()
+//        }).start()
+
+        Thread {
+            val audioTrackPlayer = AudioTrackPlayer(requireContext())
+            audioTrackPlayer.play()
+        }.start()
     }
 
     override fun onStop() {
         mediaPlayer.stop()
         mediaPlayer.setOnCompletionListener(null)
-        visualizer?.release()
+        player.interrupt()
 
         super.onStop()
     }
 
+    val DEFAULT_SAMPLE_RATE = 22050
+
     private fun startMediaPlayer() {
-        mediaPlayer.start()
-
-        val id = mediaPlayer.audioSessionId
-        if (id != -1) {
-            setAudioSessionId(id)
-        }
-
-        mediaPlayer.setOnCompletionListener {
-            mediaPlayer.start()
-        }
+        player.initPlayer(DEFAULT_SAMPLE_RATE)
+//        player.playStream(assets.open("welcome_text_with_wave_format"),handler)
     }
 
-    private fun setAudioSessionId(audioSessionId: Int) {
-        visualizer?.release()
-
-        val visualizer = object : VoiceVisualizer(audioSessionId) {
-            override fun onWaveUpdates(bytes: ByteArray) {
-                binding.musicWave.updateVisualizer(bytes)
-            }
+    val handler = Handler(Looper.myLooper()!!,object: Handler.Callback{
+        override fun handleMessage(p0: Message): Boolean {
+            binding.musicWave.updateVisualizer(p0.data.getByteArray("bytes"))
+            return true;
         }
-        this.visualizer = visualizer
-    }
+    })
+
+//    private fun setAudioSessionId2(id: Int) {
+//        val audioAttributes = AudioAttributes.Builder()
+//                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+//                .setUsage(AudioAttributes.USAGE_MEDIA)
+//                .setLegacyStreamType(AudioAttributes.CONTENT_TYPE_MUSIC)
+//                .build()
+//        val audioFormat = AudioFormat.Builder()
+//            .setSampleRate(44100)
+//            .build()
+//        val audioTrack = AudioTrack.Builder()
+//            .setAudioAttributes(audioAttributes)
+//            .setAudioFormat(audioFormat)
+//            .setSessionId(id)
+//            .setBufferSizeInBytes(1024)
+//            .build()
+//        audioTrack
+//    }
 
     private fun setBarListeners() {
         binding.seekBarDensity.setOnSeekBarChangeListener(object : OnSeekBarChangeListener() {

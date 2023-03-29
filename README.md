@@ -4,8 +4,6 @@ Simple Visualizers to imitate any audio effect.
 
 ## Usage
 
-The permission `android.permission.RECORD_AUDIO` is required in manifest file and runtime (Android 6.0+).
-
 ### Wave Animation
 
 ![wave](./raw/wave_animation_example.mov)
@@ -33,6 +31,7 @@ Where:
 - **startColor** is the main color of the Wave.
 - **endColor** is the color in phases where wave is at _y = 0_.
 - **middleColor** is for lines inside.
+- **lineCount** is a number of wave lines from 1 to 8.
 - **lineThickness** and **middleLineThickness** change the thickness of main and middle lines.
 - **density** defines how many waves on a line
 - **windowPadding** determines the size of the straight line at the edges of the animation, not affected by the wave.
@@ -64,12 +63,29 @@ Where:
 
 ### Kotlin
 
+The easiest way to check animation is to run it with random byte arrays:
+
+```kotlin
+        Thread {
+            while (true) {
+                Thread.sleep(50)
+                val b = ByteArray(1024)
+                Random().nextBytes(b)
+                runOnUiThread { binding.animationView.updateVisualizer(b) }
+            }
+        }.start()
+```
+
+Where `animationView` is a **SpeechLineView** or **SpeechWaveView**.
+
+To attach animation to audio track we can use Visualizer that requires audioSessionId from MediaPlayer. It provides `ByteArray` that is needed for the animations.
+
 ```kotlin
 val id = mediaPlayer.audioSessionId
 if (id != -1) {
     val visualizer = object : VoiceVisualizer(audioSessionId) {
         override fun onWaveUpdates(bytes: ByteArray) {
-            binding.animation.updateVisualizer(bytes)
+            binding.animationView.updateVisualizer(bytes)
         }
     }
 }
@@ -79,6 +95,8 @@ if (id != -1) {
 
 VoiceVisualizer extends android Visualizer and subscribes to changes. So it's better to keep in mind it's needed to be released.
 
+Also it requires the permission `android.permission.RECORD_AUDIO` in manifest file and runtime (Android 6.0+).
+
 ## Sample
 
-There is a sample app with both animations to play with params.
+There is a sample app with both animations to play with params using SeekBars, CheckBoxes and EditTexts.
