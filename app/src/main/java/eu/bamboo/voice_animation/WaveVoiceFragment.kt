@@ -14,7 +14,7 @@ class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
     private var _binding: FragmentWaveVoiceBinding? = null
     private val binding get() = _binding!!
 
-    private val player = StreamPlayer.initPlayer(44100)
+    private val player = StreamPlayer.initPlayer()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +51,8 @@ class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
     }
 
     private fun startMediaPlayer() {
-        player.playStream(requireContext().resources.openRawResource(R.raw.pcm1644m)) { bytes ->
+        val stream = requireContext().resources.openRawResource(R.raw.welcome_text_with_wave_format)
+        player.playStream(stream) { bytes ->
             binding.musicWave.updateVisualizer(bytes)
         }
     }
