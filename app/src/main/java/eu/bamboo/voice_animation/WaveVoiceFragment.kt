@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import eu.bamboo.speech_waves_animation.toAnimationSpeed
+import eu.bamboo.speech_waves_animation.visualizers.StreamPlayer
 import eu.bamboo.voice_animation.databinding.FragmentWaveVoiceBinding
 
 class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {

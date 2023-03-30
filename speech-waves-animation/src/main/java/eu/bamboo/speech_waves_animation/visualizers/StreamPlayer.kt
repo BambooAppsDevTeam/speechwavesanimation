@@ -1,4 +1,4 @@
-package eu.bamboo.voice_animation
+package eu.bamboo.speech_waves_animation.visualizers
 
 import android.media.AudioAttributes
 import android.media.AudioFormat
@@ -45,6 +45,8 @@ class StreamPlayer private constructor(private val audioTrack: AudioTrack) {
     }
 
     companion object {
+
+        private const val TAG = "StreamPlayer"
 
         private const val DEFAULT_SAMPLE_RATE = 22050
 

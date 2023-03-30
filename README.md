@@ -78,7 +78,18 @@ The easiest way to check animation is to run it with random byte arrays:
 
 Where `animationView` is a **SpeechLineView** or **SpeechWaveView**.
 
-To attach animation to audio track we can use Visualizer that requires audioSessionId from MediaPlayer. It provides `ByteArray` that is needed for the animations.
+To attach animation to audio track we can use AudioTrack and InputStream.
+StreamPlayer provides `ByteArray` that is needed for the animations.
+
+```kotlin
+val stream = requireContext().resources.openRawResource(rawRes)
+player.playStream(stream) { bytes ->
+    binding.musicWave.updateVisualizer(bytes)
+}
+```
+
+Also to attach animation to audio track we can use Visualizer that requires audioSessionId from MediaPlayer.
+VoiceVisualizer provides `ByteArray` that is needed for the animations.
 
 ```kotlin
 val id = mediaPlayer.audioSessionId
