@@ -1,10 +1,9 @@
-package eu.bamboo.speech_waves_animation.visualizers
+package eu.bamboo.voice_animation.visualizers
 
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.util.Log
-import java.io.IOException
 import java.io.InputStream
 
 typealias OnWaveUpdates = (bytes: ByteArray?) -> Unit
@@ -12,25 +11,20 @@ typealias OnWaveUpdates = (bytes: ByteArray?) -> Unit
 class StreamPlayer private constructor(private val audioTrack: AudioTrack) {
 
     fun playStream(stream: InputStream, onWaveUpdates: OnWaveUpdates) {
-        try {
-            audioTrack.play()
+        audioTrack.play()
 
-            Log.w(TAG, "Start playing the stream")
-            val audioData = ByteArray(1024)
-            while (true) {
-                val step = stream.read(audioData, 0, audioData.size)
-                if (step <= 0) break
-                onWaveUpdates.invoke(audioData)
-                audioTrack.write(audioData, 0, step)
-            }
-            Log.w(TAG, "End playing the stream")
+        Log.d(TAG, "Start playing the stream")
+        val audioData = ByteArray(DEFAULT_BUFFER_SIZE)
+        var step: Int
+        while (stream.read(audioData, 0, audioData.size).also { step = it } > 0) {
+            onWaveUpdates.invoke(audioData)
+            audioTrack.write(audioData, 0, step)
+        }
+        Log.d(TAG, "End playing the stream")
 
-            stream.close()
-            if (audioTrack.state != AudioTrack.STATE_UNINITIALIZED) {
-                audioTrack.release()
-            }
-        } catch (e: IOException) {
-            Log.e(TAG, "Can't play the stream", e)
+        stream.close()
+        if (audioTrack.state != AudioTrack.STATE_UNINITIALIZED) {
+            audioTrack.release()
         }
     }
 

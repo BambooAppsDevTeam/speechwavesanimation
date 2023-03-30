@@ -74,7 +74,7 @@ class SpeechWavesView @JvmOverloads constructor(
     }
 
     fun updateVisualizer(bytes: ByteArray?) {
-        this.rawAudioBytes = bytes
+        updateRawByteArray(bytes)
         invalidate()
     }
 
@@ -93,6 +93,14 @@ class SpeechWavesView @JvmOverloads constructor(
         wavePaintConfig.updatePaint()
 
         drawPath(canvas)
+    }
+
+    private fun updateRawByteArray(bytes: ByteArray?) {
+        if (bytes != null && bytes.all { it.toInt() == 0 }) {
+            this.rawAudioBytes = ByteArray(bytes.size) { -128 }
+        } else {
+            this.rawAudioBytes = bytes
+        }
     }
 
     private fun createArraysIfChanged() {

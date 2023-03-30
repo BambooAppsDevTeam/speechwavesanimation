@@ -1,13 +1,14 @@
 package eu.bamboo.voice_animation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import eu.bamboo.speech_waves_animation.toAnimationSpeed
-import eu.bamboo.speech_waves_animation.visualizers.StreamPlayer
+import eu.bamboo.voice_animation.visualizers.StreamPlayer
 import eu.bamboo.voice_animation.databinding.FragmentWaveVoiceBinding
 
 class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
@@ -52,7 +53,7 @@ class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
     }
 
     private fun startMediaPlayer() {
-        val stream = requireContext().resources.openRawResource(R.raw.welcome_text_with_wave_format)
+        val stream = requireContext().resources.openRawResource(R.raw.audio_wav)
         player.playStream(stream) { bytes ->
             binding.musicWave.updateVisualizer(bytes)
         }
