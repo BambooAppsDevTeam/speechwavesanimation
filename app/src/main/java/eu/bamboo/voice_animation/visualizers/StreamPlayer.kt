@@ -6,7 +6,7 @@ import android.media.AudioTrack
 import android.util.Log
 import java.io.InputStream
 
-typealias OnWaveUpdates = (bytes: ByteArray?) -> Unit
+typealias OnWaveUpdates = (bytes: ByteArray) -> Unit
 
 class StreamPlayer private constructor(private val audioTrack: AudioTrack) {
 
@@ -18,8 +18,7 @@ class StreamPlayer private constructor(private val audioTrack: AudioTrack) {
             val audioData = ByteArray(DEFAULT_BUFFER_SIZE)
             var step: Int
             while (stream.read(audioData, 0, audioData.size).also { step = it } > 0) {
-                onWaveUpdates.invoke(audioData?.filterIndexed { index, _ -> index % 2 == 0 }
-                    ?.toByteArray())
+                onWaveUpdates.invoke(audioData.filterIndexed { index, _ -> index % 2 == 0 }.toByteArray())
                 audioTrack.write(audioData, 0, step)
             }
             Log.d(TAG, "End playing the stream")
