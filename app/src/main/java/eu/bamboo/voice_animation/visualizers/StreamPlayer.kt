@@ -17,8 +17,12 @@ class StreamPlayer private constructor(private val audioTrack: AudioTrack) {
             Log.d(TAG, "Start playing the stream")
             val audioData = ByteArray(DEFAULT_BUFFER_SIZE)
             var step: Int
+            var counter = 0
             while (stream.read(audioData, 0, audioData.size).also { step = it } > 0) {
-                onWaveUpdates.invoke(audioData.filterIndexed { index, _ -> index % 2 == 0 }.toByteArray())
+                if (counter++ < AUDIO_TRACK_HEADER_BYTES) {
+                    continue
+                }
+                onWaveUpdates.invoke(audioData.filterIndexed { index, _ -> index % TRACK_FREQUENCY == 0 }.toByteArray())
                 audioTrack.write(audioData, 0, step)
             }
             Log.d(TAG, "End playing the stream")
@@ -26,9 +30,6 @@ class StreamPlayer private constructor(private val audioTrack: AudioTrack) {
             Log.d(TAG, "The stream was interrupted")
         } finally {
             stream.close()
-            if (audioTrack.state != AudioTrack.STATE_UNINITIALIZED) {
-                audioTrack.release()
-            }
         }
     }
 
@@ -48,7 +49,11 @@ class StreamPlayer private constructor(private val audioTrack: AudioTrack) {
 
         private const val DEFAULT_SAMPLE_RATE = 22050
 
-        private const val DEFAULT_BUFFER_SIZE = 1024 * 2
+        private const val TRACK_FREQUENCY = 2
+
+        private const val DEFAULT_BUFFER_SIZE = 1024 * TRACK_FREQUENCY
+
+        private const val AUDIO_TRACK_HEADER_BYTES = 1
 
         fun initPlayer(sampleRate: Int = DEFAULT_SAMPLE_RATE): StreamPlayer {
             val bufferSize = AudioTrack.getMinBufferSize(
