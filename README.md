@@ -84,7 +84,7 @@ StreamPlayer provides `ByteArray` that is needed for the animations.
 ```kotlin
 val stream = requireContext().resources.openRawResource(rawRes)
 player.playStream(stream) { bytes ->
-    binding.musicWave.updateVisualizer(bytes)
+    binding.musicWave.update(bytes)
 }
 ```
 

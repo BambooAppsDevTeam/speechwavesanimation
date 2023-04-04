@@ -73,7 +73,7 @@ class SpeechWavesView @JvmOverloads constructor(
         createArraysIfChanged()
     }
 
-    fun updateVisualizer(bytes: ByteArray?) {
+    fun update(bytes: ByteArray?) {
         updateRawByteArray(bytes)
         invalidate()
     }

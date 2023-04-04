@@ -55,7 +55,7 @@ class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
     private fun startMediaPlayer() {
         val stream = requireContext().resources.openRawResource(R.raw.audio_wav)
         player.playStream(stream) { bytes ->
-            binding.musicWave.updateVisualizer(bytes)
+            binding.musicWave.update(bytes)
         }
     }
 

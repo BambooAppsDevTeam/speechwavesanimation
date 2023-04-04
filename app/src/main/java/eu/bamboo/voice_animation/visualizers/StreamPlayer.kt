@@ -11,20 +11,25 @@ typealias OnWaveUpdates = (bytes: ByteArray?) -> Unit
 class StreamPlayer private constructor(private val audioTrack: AudioTrack) {
 
     fun playStream(stream: InputStream, onWaveUpdates: OnWaveUpdates) {
-        audioTrack.play()
+        try {
+            audioTrack.play()
 
-        Log.d(TAG, "Start playing the stream")
-        val audioData = ByteArray(DEFAULT_BUFFER_SIZE)
-        var step: Int
-        while (stream.read(audioData, 0, audioData.size).also { step = it } > 0) {
-            onWaveUpdates.invoke(audioData)
-            audioTrack.write(audioData, 0, step)
-        }
-        Log.d(TAG, "End playing the stream")
-
-        stream.close()
-        if (audioTrack.state != AudioTrack.STATE_UNINITIALIZED) {
-            audioTrack.release()
+            Log.d(TAG, "Start playing the stream")
+            val audioData = ByteArray(DEFAULT_BUFFER_SIZE)
+            var step: Int
+            while (stream.read(audioData, 0, audioData.size).also { step = it } > 0) {
+                onWaveUpdates.invoke(audioData?.filterIndexed { index, _ -> index % 2 == 0 }
+                    ?.toByteArray())
+                audioTrack.write(audioData, 0, step)
+            }
+            Log.d(TAG, "End playing the stream")
+        } catch (e: IllegalStateException) {
+            Log.d(TAG, "The stream was interrupted")
+        } finally {
+            stream.close()
+            if (audioTrack.state != AudioTrack.STATE_UNINITIALIZED) {
+                audioTrack.release()
+            }
         }
     }
 
@@ -44,7 +49,7 @@ class StreamPlayer private constructor(private val audioTrack: AudioTrack) {
 
         private const val DEFAULT_SAMPLE_RATE = 22050
 
-        private const val DEFAULT_BUFFER_SIZE = 1024
+        private const val DEFAULT_BUFFER_SIZE = 1024 * 2
 
         fun initPlayer(sampleRate: Int = DEFAULT_SAMPLE_RATE): StreamPlayer {
             val bufferSize = AudioTrack.getMinBufferSize(
