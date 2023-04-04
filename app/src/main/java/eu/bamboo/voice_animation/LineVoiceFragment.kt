@@ -75,7 +75,7 @@ class LineVoiceFragment : Fragment(R.layout.fragment_line_voice) {
 
         val visualizer = object : VoiceVisualizer(audioSessionId) {
             override fun onWaveUpdates(bytes: ByteArray) {
-                binding.musicLine.updateVisualizer(bytes)
+                binding.musicLine.update(bytes)
             }
         }
         this.visualizer = visualizer

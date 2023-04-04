@@ -58,7 +58,7 @@ class SpeechLineView @JvmOverloads constructor(
         createArraysIfChanged()
     }
 
-    fun updateVisualizer(bytes: ByteArray?) {
+    fun update(bytes: ByteArray?) {
         this.rawAudioBytes = bytes
         invalidate()
     }
