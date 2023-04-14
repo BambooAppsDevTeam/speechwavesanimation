@@ -96,7 +96,7 @@ val id = mediaPlayer.audioSessionId
 if (id != -1) {
     val visualizer = object : VoiceVisualizer(audioSessionId) {
         override fun onWaveUpdates(bytes: ByteArray) {
-            binding.animationView.updateVisualizer(bytes)
+            binding.animationView.update(bytes)
         }
     }
 }
