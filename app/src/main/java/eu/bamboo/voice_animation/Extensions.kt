@@ -35,7 +35,7 @@ fun String.toColorIntOrNull(): Int? = try {
     when (e) {
         is NumberFormatException, is IllegalArgumentException -> null
         else -> {
-            Log.d("VoiceActivity", "Unknown color exception.")
+            Log.d(TAG, "Unknown color exception.")
         }
     }
 }
@@ -48,3 +48,5 @@ fun EditText.toColorInt(): Int? = text.toString().toColorIntOrNull().apply {
         error = "Can't apply the color"
     }
 }
+
+const val TAG = "VoiceAnimation"

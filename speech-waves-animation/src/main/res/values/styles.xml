@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <attr name="animationSpeed" format="enum"/>
+    <attr name="lineCount" format="integer" />
+
     <declare-styleable name="VoiceWave">
         <attr name="lineThickness" format="float" />
         <attr name="middleLineThickness" format="float" />
@@ -7,13 +11,32 @@
         <attr name="startColor" format="color" />
         <attr name="endColor" format="color" />
         <attr name="middleColor" format="color" />
-        <attr name="waveDensity" format="float" />
-        <attr name="animationSpeed" format="enum">
-            <enum name="SLOW" value="0"/>
-            <enum name="NORMAL" value="1"/>
-            <enum name="FAST" value="2"/>
+        <attr name="density" format="float" />
+        <attr name="waveSpeed" format="enum">
+            <enum name="slow" value="0"/>
+            <enum name="normal" value="1"/>
+            <enum name="fast" value="2"/>
         </attr>
-        <attr name="lineCount" format="integer" />
+        <attr name="lineCount" />
         <attr name="windowPadding" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="VoiceLine">
+        <attr name="color1" format="color" />
+        <attr name="color2" format="color" />
+        <attr name="color3" format="color" />
+        <attr name="color4" format="color" />
+        <attr name="color5" format="color" />
+        <attr name="color6" format="color" />
+        <attr name="color7" format="color" />
+        <attr name="color8" format="color" />
+        <attr name="baseColor" format="color" />
+        <attr name="symmetry" format="boolean" />
+        <attr name="lineSpeed" format="enum">
+            <enum name="slow" value="0"/>
+            <enum name="normal" value="1"/>
+            <enum name="fast" value="2"/>
+        </attr>
+        <attr name="lineCount" />
     </declare-styleable>
 </resources>

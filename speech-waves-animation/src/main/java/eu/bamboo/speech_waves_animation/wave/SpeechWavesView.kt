@@ -1,4 +1,4 @@
-package eu.bamboo.speech_waves_animation
+package eu.bamboo.speech_waves_animation.wave
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,9 +8,14 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
-import kotlin.math.ceil
+import eu.bamboo.speech_waves_animation.AnimationSpeed
+import eu.bamboo.speech_waves_animation.Point
+import eu.bamboo.speech_waves_animation.R
+import eu.bamboo.speech_waves_animation.firstOrLast
+import eu.bamboo.speech_waves_animation.toAnimationSpeed
+import kotlin.math.round
 
-class LinesWaveView @JvmOverloads constructor(
+class SpeechWavesView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -21,8 +26,8 @@ class LinesWaveView @JvmOverloads constructor(
     private var points: Array<Point> = Array(pointCount + 1) { Point(0f, 0f) }
     private var bezierControlStartPoints: Array<Point> = Array(pointCount + 1) { Point(0f, 0f) }
     private var bezierControlEndPoints: Array<Point> = Array(pointCount + 1) { Point(0f, 0f) }
-    private var sourceY: FloatArray = FloatArray(pointCount + 1)
-    private var destinationY: FloatArray = FloatArray(pointCount + 1)
+    private var prevY: FloatArray = FloatArray(pointCount + 1)
+    private var currentY: FloatArray = FloatArray(pointCount + 1)
     private var maxBatchCount = MAX_ANIM_BATCH_COUNT
     private var batchCount = 0
     private val rect = Rect()
@@ -59,8 +64,8 @@ class LinesWaveView @JvmOverloads constructor(
     init {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.VoiceWave, 0, 0)
         if (attrs != null) {
-            density = a.getFloat(R.styleable.VoiceWave_waveDensity, DEFAULT_DENSITY)
-            speed = a.getColor(R.styleable.VoiceWave_animationSpeed, AnimationSpeed.NORMAL.ordinal).toAnimationSpeed()
+            density = a.getFloat(R.styleable.VoiceWave_density, DEFAULT_DENSITY)
+            speed = a.getColor(R.styleable.VoiceWave_waveSpeed, AnimationSpeed.NORMAL.ordinal).toAnimationSpeed()
             pathCount = a.getColor(R.styleable.VoiceWave_lineCount, DEFAULT_PATH_COUNT)
             windowPadding = a.getFloat(R.styleable.VoiceWave_windowPadding, DEFAULT_WINDOW_PADDING)
             a.recycle()
@@ -68,8 +73,8 @@ class LinesWaveView @JvmOverloads constructor(
         createArraysIfChanged()
     }
 
-    fun updateVisualizer(bytes: ByteArray?) {
-        this.rawAudioBytes = bytes
+    fun update(bytes: ByteArray?) {
+        updateRawByteArray(bytes)
         invalidate()
     }
 
@@ -90,12 +95,20 @@ class LinesWaveView @JvmOverloads constructor(
         drawPath(canvas)
     }
 
+    private fun updateRawByteArray(bytes: ByteArray?) {
+        if (bytes != null && bytes.all { it.toInt() == 0 }) {
+            this.rawAudioBytes = ByteArray(bytes.size) { -128 }
+        } else {
+            this.rawAudioBytes = bytes
+        }
+    }
+
     private fun createArraysIfChanged() {
         points = Array(pointCount + 1) { Point(0f, 0f) }
         bezierControlStartPoints = Array(pointCount + 1) { Point(0f, 0f) }
         bezierControlEndPoints = Array(pointCount + 1) { Point(0f, 0f) }
-        sourceY = FloatArray(pointCount + 1)
-        destinationY = FloatArray(pointCount + 1)
+        prevY = FloatArray(pointCount + 1)
+        currentY = FloatArray(pointCount + 1)
     }
 
     private fun initializeBezierPoints() {
@@ -106,8 +119,8 @@ class LinesWaveView @JvmOverloads constructor(
             for (i in points.indices) {
                 val posX = rect.left + i * widthOffset
                 val posY = heightCenter.toFloat()
-                sourceY[i] = posY
-                destinationY[i] = posY
+                prevY[i] = posY
+                currentY[i] = posY
                 points[i].x = posX
                 points[i].y = posY
             }
@@ -118,19 +131,19 @@ class LinesWaveView @JvmOverloads constructor(
         val heightCenter = rect.height() / 2f
         val paddingHorizontal = AXIS_X_WIDTH * windowPadding
         if (batchCount == 0) {
-            val lastPosY = destinationY.last()
+            val lastPosY = currentY.last()
             for (i in points.indices) {
-                val x = ceil(((i) * (rawAudioBytes.size / pointCount)).toDouble()).toInt()
+                val x = round(i * (rawAudioBytes.size / pointCount.toFloat())).toInt()
                 val posY = if (x > paddingHorizontal && x < AXIS_X_WIDTH - paddingHorizontal) {
                     heightCenter + (rawAudioBytes[x] + BYTE_SIZE).toByte() * heightCenter / BYTE_SIZE
                 } else {
                     heightCenter
                 }
 
-                sourceY[i] = destinationY[i]
-                destinationY[i] = posY
+                prevY[i] = currentY[i]
+                currentY[i] = posY
             }
-            destinationY[points.size - 1] = lastPosY
+            currentY[points.size - 1] = lastPosY
         }
     }
 
@@ -138,7 +151,7 @@ class LinesWaveView @JvmOverloads constructor(
         batchCount++
 
         for (i in points.indices) {
-            points[i].y = sourceY[i] + batchCount.toFloat() / maxBatchCount * (destinationY[i] - sourceY[i])
+            points[i].y = prevY[i] + batchCount.toFloat() / maxBatchCount * (currentY[i] - prevY[i])
         }
 
         if (batchCount == maxBatchCount) batchCount = 0

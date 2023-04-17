@@ -1,34 +1,34 @@
 package eu.bamboo.voice_animation
 
-import android.Manifest
-import android.media.MediaPlayer
-import android.media.audiofx.Visualizer
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import eu.bamboo.voice_animation.databinding.ActivityVoiceBinding
-import eu.bamboo.speech_waves_animation.OnSeekBarChangeListener
-import eu.bamboo.speech_waves_animation.VoiceVisualizer
+import androidx.fragment.app.Fragment
 import eu.bamboo.speech_waves_animation.toAnimationSpeed
+import eu.bamboo.voice_animation.visualizers.StreamPlayer
+import eu.bamboo.voice_animation.databinding.FragmentWaveVoiceBinding
 
-class VoiceActivity : AppCompatActivity() {
+class WaveVoiceFragment : Fragment(R.layout.fragment_wave_voice) {
 
-    private lateinit var binding: ActivityVoiceBinding
+    private var _binding: FragmentWaveVoiceBinding? = null
+    private val binding get() = _binding!!
 
-    private lateinit var mediaPlayer: MediaPlayer
+    private val player = StreamPlayer.initPlayer()
 
-    private var visualizer: Visualizer? = null
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentWaveVoiceBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    private val neededPermissionsArray = listOfNotNull(
-        Manifest.permission.RECORD_AUDIO
-    ).toTypedArray()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityVoiceBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.applyColors.setOnClickListener {
             applyColors()
@@ -36,33 +36,27 @@ class VoiceActivity : AppCompatActivity() {
 
         setBarListeners()
         setDefault()
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.voice_main_feature_5)
     }
 
     override fun onStart() {
         super.onStart()
 
-        startMediaPlayerIfPermitted()
+        Thread {
+            startMediaPlayer()
+        }.start()
     }
 
     override fun onStop() {
-        mediaPlayer.stop()
-        mediaPlayer.setOnCompletionListener(null)
-        visualizer?.release()
+        player.interrupt()
 
         super.onStop()
     }
 
-    private fun setAudioSessionId(audioSessionId: Int) {
-        visualizer?.release()
-
-        val visualizer = object : VoiceVisualizer(audioSessionId) {
-            override fun onWaveUpdates(bytes: ByteArray) {
-                binding.musicWave.updateVisualizer(bytes)
-            }
+    private fun startMediaPlayer() {
+        val stream = requireContext().resources.openRawResource(R.raw.audio_wav)
+        player.playStream(stream) { bytes ->
+            binding.musicWave.update(bytes)
         }
-        this.visualizer = visualizer
     }
 
     private fun setBarListeners() {
@@ -150,35 +144,6 @@ class VoiceActivity : AppCompatActivity() {
         binding.musicWave.wavePaintConfig.startColor = startColor
         binding.musicWave.wavePaintConfig.endColor = endColor
         binding.musicWave.wavePaintConfig.middleColor = middleColor
-    }
-
-    private fun startMediaPlayerIfPermitted() {
-        if (appHasAudioRecordPermissions()) {
-            startMediaPlayer()
-        } else {
-            registerForActivityResult(
-                ActivityResultContracts.RequestMultiplePermissions()
-            ) { resultMap ->
-                neededPermissionsArray
-                    .all { resultMap[it] ?: false }
-                    .then { startMediaPlayer() }
-            }.launch(neededPermissionsArray)
-        }
-    }
-
-    private fun appHasAudioRecordPermissions() = neededPermissionsArray.all { hasPermission(it) }
-
-    private fun startMediaPlayer() {
-        mediaPlayer.start()
-
-        val id = mediaPlayer.audioSessionId
-        if (id != -1) {
-            setAudioSessionId(id)
-        }
-
-        mediaPlayer.setOnCompletionListener {
-            mediaPlayer.start()
-        }
     }
 
 }

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <eu.bamboo.speech_waves_animation.line.SpeechLineView
+            android:id="@+id/musicLine"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_marginVertical="20dp"
+            app:baseColor="#1D4A76"
+            app:color1="#4493E2"
+            app:color2="#1A5B9C"
+            app:lineCount="2"
+            app:lineSpeed="slow"
+            app:symmetry="true" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/symmetry"
+            style="@style/SwitchConfig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Symmetry" />
+
+        <TextView
+            android:id="@+id/titleLineCount"
+            style="@style/SeekBarTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change Line Count: null" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBarLineCount"
+            style="@style/SeekBarConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="7" />
+
+        <TextView
+            android:id="@+id/titleSpeed"
+            style="@style/SeekBarTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change Speed: null" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBarSpeed"
+            style="@style/SeekBarConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="2" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Base Color"
+            app:boxBackgroundColor="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/colorBase"
+                style="@style/ColorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#1D4A76" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color 1"
+            app:boxBackgroundColor="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/color1"
+                style="@style/ColorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#4493E2" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color 2"
+            app:boxBackgroundColor="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/color2"
+                style="@style/ColorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#1A5B9C" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color 3"
+            app:boxBackgroundColor="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/color3"
+                style="@style/ColorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#ff0000" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color 4"
+            app:boxBackgroundColor="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/color4"
+                style="@style/ColorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#ffffff" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color 5"
+            app:boxBackgroundColor="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/color5"
+                style="@style/ColorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#00ff00" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color 6"
+            app:boxBackgroundColor="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/color6"
+                style="@style/ColorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#00ffff" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color 7"
+            app:boxBackgroundColor="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/color7"
+                style="@style/ColorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#ffff00" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ColorTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color 8"
+            app:boxBackgroundColor="@android:color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/color8"
+                style="@style/ColorEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#888888" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/applyColors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="?colorPrimary"
+            android:padding="4dp"
+            android:text="Apply Colors"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+</ScrollView>

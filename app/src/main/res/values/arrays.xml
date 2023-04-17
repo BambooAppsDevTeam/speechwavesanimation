@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="animation_screens">
+        <item>Speech Wave Animation</item>
+        <item>Speech Line Animation</item>
+    </string-array>
+</resources>
