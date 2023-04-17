@@ -6,7 +6,11 @@ Simple Visualizers to imitate any audio effect.
 
 ### Wave Animation
 
-![wave](./raw/wave_animation_example.mov)
+![wave](./raw/wave_animation_example.mov).
+
+##### Note
+
+If the video is not showing, the file `wave_animation_example.mov` is available in raw folder in the root of the project.
 
 #### XML
 
@@ -39,6 +43,10 @@ Where:
 ### Line Animation
 
 ![line](./raw/line_animation_example.mov)
+
+##### Note
+
+If the video is not showing, the file `line_animation_example.mov` is available in raw folder in the root of the project.
 
 #### XML
 
